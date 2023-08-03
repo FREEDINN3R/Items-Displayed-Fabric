@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "items_displayed",
+	"version": "${version}",
+	"name": "Items Displayed",
+	"description": "A mod for builders and adventurers who would like to have their items placed in the world, not lying around in chests!",
+	"authors": [
+		"FREEDINNER"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/items-displayed",
+		"sources": "https://github.com/FREEDINN3R/Items-Displayed"
+	},
+	"license": "GPLv3",
+	"icon": "assets/items_displayed/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.freedinner.items_displayed.ItemsDisplayed"
+		],
+		"client": [
+			"net.freedinner.items_displayed.ItemsDisplayedClient"
+		]
+	},
+	"mixins": [
+		"items_displayed.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.22",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

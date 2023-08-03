@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "minecraft:misc",
+  "pattern": [
+    " / ",
+    "/ /"
+  ],
+  "key": {
+    "/": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "items_displayed:item_display"
+  }
+}
