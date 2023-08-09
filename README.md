@@ -40,4 +40,4 @@ A: Nah. First, it's quite troublesome to do so, and second... come on, most of t
 
 *Minecraft constantly evolves, and so does this mod. In future updates, I plan to add more items, including Diamond, Emerald, Blaze Rod, Totem of Undying, and much more! Would you like to join me on this adventure?*
 
-## [Go check it out on CurseForge!](https://www.curseforge.com/minecraft/mc-mods/items-displayed)
+## Go check it out on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/items-displayed) or [Modrinth](https://modrinth.com/mod/items-displayed)!
