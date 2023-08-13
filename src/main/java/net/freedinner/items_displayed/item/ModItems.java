@@ -1,6 +1,7 @@
 package net.freedinner.items_displayed.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.block.ModBlocks;
 import net.freedinner.items_displayed.item.custom.DebugBlockItem;
@@ -110,5 +111,7 @@ public class ModItems {
 
     public static void registerItems() {
         ItemsDisplayed.LOGGER.info("Registering items");
+
+        FuelRegistry.INSTANCE.add(ITEM_DISPLAY, 250);
     }
 }
