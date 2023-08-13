@@ -1,5 +1,6 @@
 package net.freedinner.items_displayed.item.custom;
 
+import net.freedinner.items_displayed.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
@@ -30,6 +31,11 @@ public class PlaceableItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
+
+        if (!ModConfigs.APPEND_ITEM_TOOLTIP) {
+            return;
+        }
+
         tooltip.add(Text.translatable("item.items_displayed.tooltip.place").formatted(Formatting.GRAY));
     }
 }

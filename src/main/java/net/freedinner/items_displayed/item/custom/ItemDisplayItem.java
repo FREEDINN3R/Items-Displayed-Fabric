@@ -1,5 +1,6 @@
 package net.freedinner.items_displayed.item.custom;
 
+import net.freedinner.items_displayed.config.ModConfigs;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.entity.custom.ItemDisplayEntity;
 import net.minecraft.client.gui.screen.Screen;
@@ -34,6 +35,10 @@ public class ItemDisplayItem extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
+        if (!ModConfigs.APPEND_EXTRA_TOOLTIP) {
+            return;
+        }
+
         if (Screen.hasShiftDown()) {
             for (int i = 0; i < 3; i++) {
                 tooltip.add(Text.translatable("item.items_displayed.tooltip.item_display_" + i).formatted(Formatting.GRAY));
@@ -64,9 +69,7 @@ public class ItemDisplayItem extends Item {
                 return ActionResult.FAIL;
             }
 
-            float angle = MathHelper.wrapDegrees(context.getPlayerYaw() - 180.0f);
-            setRotation(itemDisplayEntity, angle);
-
+            setItemDisplayRotation(itemDisplayEntity, context);
             summonItemDisplay(serverWorld, itemDisplayEntity, context.getPlayer());
         }
 
@@ -86,7 +89,11 @@ public class ItemDisplayItem extends Item {
         return ModEntities.ITEM_DISPLAY.create(serverWorld, null, consumer, blockPos, SpawnReason.SPAWN_EGG, true, false);
     }
 
-    private void setRotation(ItemDisplayEntity entity, float angle) {
+    private void setItemDisplayRotation(ItemDisplayEntity entity, ItemUsageContext context) {
+        float angle = MathHelper.wrapDegrees(context.getPlayerYaw() - 180.0f);
+        float minRotation = ModConfigs.ITEM_DISPLAY_ROTATION_ANGLE;
+        angle = MathHelper.floor((angle + minRotation / 2.0) / minRotation) * minRotation;
+
         entity.setDisplayRotation(angle);
     }
 

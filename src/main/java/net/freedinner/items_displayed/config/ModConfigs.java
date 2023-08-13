@@ -38,14 +38,17 @@ public class ModConfigs {
         configProvider.addComment("Should append a helper tooltip to all placeable items");
         configProvider.addComment("Value = true or false");
         configProvider.addField(APPEND_ITEM_TOOLTIP_KEY, APPEND_ITEM_TOOLTIP_DEFAULT);
+        configProvider.addComment("");
 
         configProvider.addComment("Should append a helper tooltip to other items added by the mod");
         configProvider.addComment("Value = true or false");
         configProvider.addField(APPEND_EXTRA_TOOLTIP_KEY, APPEND_EXTRA_TOOLTIP_DEFAULT);
+        configProvider.addComment("");
 
         configProvider.addComment("The min angle by which Item Display entity can be rotated");
         configProvider.addComment("Example: for Armor Stands this value is 45, and its rotation snaps to the closest 45-degree angle");
         configProvider.addComment("Min value = 1, max value = 90");
+        configProvider.addComment("Use only the divisors of 90 (3, 10, 15, etc.) to prevent strange behavior");
         configProvider.addField(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT);
 
         /*configProvider.addComment("Blacklisted items which the player shouldn't be able to place");
