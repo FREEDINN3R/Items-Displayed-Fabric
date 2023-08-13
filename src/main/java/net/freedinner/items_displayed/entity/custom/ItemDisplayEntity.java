@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -233,7 +232,7 @@ public class ItemDisplayEntity extends LivingEntity {
         }
 
         if (source.isIn(DamageTypeTags.IS_EXPLOSION)) {
-            breakAndDropSticks(source);
+            breakAndDropItem(source);
             kill();
             return false;
         }
@@ -277,7 +276,7 @@ public class ItemDisplayEntity extends LivingEntity {
 
         long currTime = getWorld().getTime();
         if (currTime - lastHitTime <= 5L || isProjectile) {
-            breakAndDropSticks(source);
+            breakAndDropItem(source);
             spawnBreakParticles();
             kill();
         } else {
@@ -329,8 +328,8 @@ public class ItemDisplayEntity extends LivingEntity {
         }
     }
 
-    private void breakAndDropSticks(DamageSource damageSource) {
-        ItemStack itemStack = new ItemStack(Items.STICK, 3);
+    private void breakAndDropItem(DamageSource damageSource) {
+        ItemStack itemStack = new ItemStack(ModItems.ITEM_DISPLAY);
         Block.dropStack(getWorld(), getBlockPos(), itemStack);
         onBreak(damageSource);
     }
