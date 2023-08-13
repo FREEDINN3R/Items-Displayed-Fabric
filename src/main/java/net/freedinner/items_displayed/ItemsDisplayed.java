@@ -3,6 +3,7 @@ package net.freedinner.items_displayed;
 import net.fabricmc.api.ModInitializer;
 
 import net.freedinner.items_displayed.block.ModBlocks;
+import net.freedinner.items_displayed.config.ModConfigs;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.item.ModItemGroups;
 import net.freedinner.items_displayed.item.ModItems;
@@ -16,10 +17,14 @@ public class ItemsDisplayed implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModConfigs.registerConfigs();
+
 		ModBlocks.registerBlocks();
 		ModItems.registerItems();
 		ModItemGroups.registerItemGroups();
-		ModTags.registerTags();
+
 		ModEntities.registerEntities();
+
+		ModTags.registerTags();
 	}
 }
