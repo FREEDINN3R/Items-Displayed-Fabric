@@ -22,7 +22,7 @@ import java.util.List;
 public abstract class SmithingTemplateItemMixin {
     @Redirect(method = "createNetheriteUpgrade", at = @At(value = "NEW", target = "Lnet/minecraft/item/SmithingTemplateItem;*"))
     private static SmithingTemplateItem onNew(Text appliesToText, Text ingredientsText, Text titleText, Text baseSlotDescriptionText, Text additionsSlotDescriptionText, List<Identifier> emptyBaseSlotTextures, List<Identifier> emptyAdditionsSlotTextures) {
-        return new PlaceableSmithingTemplateItem(ModBlocks.NETHERITE_UPGRADE, appliesToText, ingredientsText, titleText, baseSlotDescriptionText, additionsSlotDescriptionText, emptyBaseSlotTextures, emptyAdditionsSlotTextures);
+        return new PlaceableSmithingTemplateItem("netherite_upgrade", appliesToText, ingredientsText, titleText, baseSlotDescriptionText, additionsSlotDescriptionText, emptyBaseSlotTextures, emptyAdditionsSlotTextures);
     }
 
     @Unique
@@ -35,7 +35,7 @@ public abstract class SmithingTemplateItemMixin {
 
     @Redirect(method = "of(Lnet/minecraft/util/Identifier;)Lnet/minecraft/item/SmithingTemplateItem;", at = @At(value = "NEW", target = "Lnet/minecraft/item/SmithingTemplateItem;*"))
     private static SmithingTemplateItem onOf(Text appliesToText, Text ingredientsText, Text titleText, Text baseSlotDescriptionText, Text additionsSlotDescriptionText, List<Identifier> emptyBaseSlotTextures, List<Identifier> emptyAdditionsSlotTextures) {
-        Block block = BlockAssociations.getBlockFor(currTrimPattern);
-        return new PlaceableSmithingTemplateItem(block, appliesToText, ingredientsText, titleText, baseSlotDescriptionText, additionsSlotDescriptionText, emptyBaseSlotTextures, emptyAdditionsSlotTextures);
+        String blockName = BlockAssociations.getStringFor(currTrimPattern);
+        return new PlaceableSmithingTemplateItem(blockName, appliesToText, ingredientsText, titleText, baseSlotDescriptionText, additionsSlotDescriptionText, emptyBaseSlotTextures, emptyAdditionsSlotTextures);
     }
 }

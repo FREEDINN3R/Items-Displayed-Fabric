@@ -1,6 +1,7 @@
 package net.freedinner.items_displayed.item.custom;
 
 import net.freedinner.items_displayed.config.ModConfigs;
+import net.freedinner.items_displayed.util.BlockAssociations;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
@@ -14,17 +15,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PlaceableSmithingTemplateItem extends SmithingTemplateItem {
-    private final Block assignedBlock;
+    private final String assignedBlockName;
 
-    public PlaceableSmithingTemplateItem(Block block, Text appliesToText, Text ingredientsText, Text titleText, Text baseSlotDescriptionText, Text additionsSlotDescriptionText, List<Identifier> emptyBaseSlotTextures, List<Identifier> emptyAdditionsSlotTextures) {
+    public PlaceableSmithingTemplateItem(String blockName, Text appliesToText, Text ingredientsText, Text titleText, Text baseSlotDescriptionText, Text additionsSlotDescriptionText, List<Identifier> emptyBaseSlotTextures, List<Identifier> emptyAdditionsSlotTextures) {
         super(appliesToText, ingredientsText, titleText, baseSlotDescriptionText, additionsSlotDescriptionText, emptyBaseSlotTextures, emptyAdditionsSlotTextures);
-        assignedBlock = block;
+        assignedBlockName = blockName;
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         ItemPlacementContext placementContext = new ItemPlacementContext(context);
-        BlockItem blockItem = (BlockItem) assignedBlock.asItem();
+        BlockItem blockItem = (BlockItem) BlockAssociations.getBlockFor(assignedBlockName).asItem();
 
         return blockItem.place(placementContext);
     }

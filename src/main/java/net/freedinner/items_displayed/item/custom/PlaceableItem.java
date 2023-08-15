@@ -1,6 +1,8 @@
 package net.freedinner.items_displayed.item.custom;
 
+import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.config.ModConfigs;
+import net.freedinner.items_displayed.util.BlockAssociations;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
@@ -13,17 +15,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PlaceableItem extends Item {
-    private final Block assignedBlock;
+    private final String assignedBlockName;
 
-    public PlaceableItem(Block block, Settings settings) {
+    public PlaceableItem(String blockName, Settings settings) {
         super(settings);
-        assignedBlock = block;
+        assignedBlockName = blockName;
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         ItemPlacementContext placementContext = new ItemPlacementContext(context);
-        BlockItem blockItem = (BlockItem) assignedBlock.asItem();
+        BlockItem blockItem = (BlockItem) BlockAssociations.getBlockFor(assignedBlockName).asItem();
 
         return blockItem.place(placementContext);
     }
