@@ -1,0 +1,17 @@
+{
+  "items_displayed.credit": "Translation made by ChatGPT; review from a native is needed!",
+
+  "item.items_displayed.item_group_name": "Items Displayed",
+
+  "item.items_displayed.item_display": "Affichage d'Objet",
+
+  "item.items_displayed.tooltip.place": "Peut être placé",
+  "item.items_displayed.tooltip.shift_place": "Peut être placé en maintenant Maj enfoncée",
+
+  "item.items_displayed.tooltip.shift_more_info": "Appuyez sur Maj pour plus d'informations",
+  "item.items_displayed.tooltip.item_display_0": "Peut être utilisé pour afficher :",
+  "item.items_displayed.tooltip.item_display_1": " - Éclats",
+  "item.items_displayed.tooltip.item_display_2": " - Modèles de forge",
+
+  "item.items_displayed.tooltip.debug": "Vous ne devriez normalement pas avoir cet objet..."
+}
