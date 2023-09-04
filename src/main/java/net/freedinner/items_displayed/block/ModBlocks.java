@@ -1,6 +1,8 @@
 package net.freedinner.items_displayed.block;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.freedinner.items_displayed.ItemsDisplayed;
+import net.freedinner.items_displayed.item.custom.DebugBlockItem;
 import net.freedinner.items_displayed.util.ModBlockTemplates;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -96,7 +98,15 @@ public class ModBlocks {
             ModBlockTemplates.getDefaultIngotBlock(MapColor.BLACK));
 
     private static Block registerBlock(String name, Block block) {
-        return Registry.register(Registries.BLOCK, new Identifier(ItemsDisplayed.MOD_ID, name), block);
+        Block registeredBlock = Registry.register(Registries.BLOCK, new Identifier(ItemsDisplayed.MOD_ID, name), block);
+        registerDebugItem(name, registeredBlock);
+
+        return registeredBlock;
+    }
+
+    private static void registerDebugItem(String name, Block block) {
+        DebugBlockItem debugBlockItem = new DebugBlockItem(block, new FabricItemSettings());
+        Registry.register(Registries.ITEM, new Identifier(ItemsDisplayed.MOD_ID, name), debugBlockItem);
     }
 
     public static void registerBlocks() {

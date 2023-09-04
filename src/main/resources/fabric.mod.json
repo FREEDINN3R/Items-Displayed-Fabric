@@ -22,9 +22,6 @@
 			"net.freedinner.items_displayed.ItemsDisplayedClient"
 		]
 	},
-	"mixins": [
-		"items_displayed.mixins.json"
-	],
 	"depends": {
 		"fabricloader": ">=0.14.20",
 		"minecraft": "~1.20.1",

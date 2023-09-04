@@ -46,7 +46,6 @@ public class ModItemGroups {
                             entries.add(Items.SNORT_POTTERY_SHERD);
 
                             entries.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
-
                             entries.add(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE);
                             entries.add(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE);
                             entries.add(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE);

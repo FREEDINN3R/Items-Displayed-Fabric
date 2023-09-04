@@ -3,8 +3,6 @@
   "package": "net.freedinner.items_displayed.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ItemsMixin",
-    "SmithingTemplateItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
