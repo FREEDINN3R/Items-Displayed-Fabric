@@ -8,13 +8,9 @@ import java.util.ArrayList;
 public class ModConfigs {
     public static SimpleConfig CONFIG;
 
-    public static boolean APPEND_ITEM_TOOLTIP;
-    private static final String APPEND_ITEM_TOOLTIP_KEY = "append_item_tooltip";
-    private static final boolean APPEND_ITEM_TOOLTIP_DEFAULT = true;
-
-    public static boolean APPEND_EXTRA_TOOLTIP;
-    private static final String APPEND_EXTRA_TOOLTIP_KEY = "append_extra_tooltip";
-    private static final boolean APPEND_EXTRA_TOOLTIP_DEFAULT = true;
+    public static boolean APPEND_TOOLTIPS;
+    private static final String APPEND_TOOLTIPS_KEY = "append_tooltips";
+    private static final boolean APPEND_TOOLTIPS_DEFAULT = true;
 
     public static int ITEM_DISPLAY_ROTATION_ANGLE;
     private static final String ITEM_DISPLAY_ROTATION_ANGLE_KEY = "item_display_rotation_angle";
@@ -27,38 +23,35 @@ public class ModConfigs {
     public static void registerConfigs() {
         ItemsDisplayed.LOGGER.info("Registering configs");
 
-        ModConfigProvider configProvider = new ModConfigProvider();
-        initializeConfig(configProvider);
-
+        ModConfigProvider configProvider = createConfigProvider();
         CONFIG = SimpleConfig.of(ItemsDisplayed.MOD_ID + "_config").provider(configProvider).request();
+
         assignConfigs();
     }
 
-    private static void initializeConfig(ModConfigProvider configProvider) {
-        configProvider.addComment("Should append a helper tooltip to all placeable items");
-        configProvider.addComment("Value = true or false");
-        configProvider.addField(APPEND_ITEM_TOOLTIP_KEY, APPEND_ITEM_TOOLTIP_DEFAULT);
-        configProvider.addComment("");
+    private static ModConfigProvider createConfigProvider() {
+        ModConfigProvider configProvider = new ModConfigProvider();
 
-        configProvider.addComment("Should append a helper tooltip to other items added by the mod");
+        configProvider.addComment("Whether to add helper tooltips to some items");
         configProvider.addComment("Value = true or false");
-        configProvider.addField(APPEND_EXTRA_TOOLTIP_KEY, APPEND_EXTRA_TOOLTIP_DEFAULT);
+        configProvider.addField(APPEND_TOOLTIPS_KEY, APPEND_TOOLTIPS_DEFAULT);
         configProvider.addComment("");
 
         configProvider.addComment("The min angle by which Item Display entity can be rotated");
         configProvider.addComment("Example: for Armor Stands this value is 45, and its rotation snaps to the closest 45-degree angle");
         configProvider.addComment("Min value = 1, max value = 90");
-        configProvider.addComment("Use only the divisors of 90 (3, 10, 15, etc.) to prevent strange behavior");
+        configProvider.addComment("Use only divisors of 90 (3, 10, 15, etc.) to prevent strange behavior");
         configProvider.addField(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT);
 
         /*configProvider.addComment("Blacklisted items which the player shouldn't be able to place");
         configProvider.addComment("Use this option in case of incompatibilities with other mods");
         configProvider.addField(BLACKLISTED_ITEMS_KEY, BLACKLISTED_ITEMS_DEFAULT);*/
+
+        return configProvider;
     }
 
     private static void assignConfigs() {
-        APPEND_ITEM_TOOLTIP = CONFIG.getOrDefault(APPEND_ITEM_TOOLTIP_KEY, APPEND_ITEM_TOOLTIP_DEFAULT);
-        APPEND_EXTRA_TOOLTIP = CONFIG.getOrDefault(APPEND_EXTRA_TOOLTIP_KEY, APPEND_EXTRA_TOOLTIP_DEFAULT);
+        APPEND_TOOLTIPS = CONFIG.getOrDefault(APPEND_TOOLTIPS_KEY, APPEND_TOOLTIPS_DEFAULT);
         ITEM_DISPLAY_ROTATION_ANGLE = MathHelper.clamp(
                 CONFIG.getOrDefault(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT), 1, 90
         );
