@@ -2,22 +2,18 @@ package net.freedinner.items_displayed.util;
 
 import net.freedinner.items_displayed.block.ModBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.trim.ArmorTrimPattern;
-import net.minecraft.item.trim.ArmorTrimPatterns;
-import net.minecraft.registry.RegistryKey;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlockAssociations {
+public class BlockItemMapper {
     private static Map<Block, Item> stackForBlockMap;
     private static Map<Item, Block> blockForStackMap;
     
-    public static ItemStack getStackFor(Block block) {
+    public static Item getItemOrNull(Block block) {
         if (stackForBlockMap == null) {
             stackForBlockMap = new HashMap<>();
             
@@ -66,10 +62,14 @@ public class BlockAssociations {
             stackForBlockMap.put(ModBlocks.NETHERITE_INGOT, Items.NETHERITE_INGOT);
         }
         
-        return new ItemStack(stackForBlockMap.getOrDefault(block, Items.AIR));
+        return stackForBlockMap.getOrDefault(block, Items.AIR);
     }
 
-    public static Block getBlockFor(ItemStack stack) {
+    public static Block getBlockOrNull(ItemStack itemStack) {
+        return getBlockOrNull(itemStack.getItem());
+    }
+
+    public static Block getBlockOrNull(Item item) {
         if (blockForStackMap == null) {
             blockForStackMap = new HashMap<>();
 
@@ -111,8 +111,13 @@ public class BlockAssociations {
             blockForStackMap.put(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, ModBlocks.WARD_ARMOR_TRIM);
             blockForStackMap.put(Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, ModBlocks.WAYFINDER_ARMOR_TRIM);
             blockForStackMap.put(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, ModBlocks.WILD_ARMOR_TRIM);
+
+            blockForStackMap.put(Items.COPPER_INGOT, ModBlocks.COPPER_INGOT);
+            blockForStackMap.put(Items.IRON_INGOT, ModBlocks.IRON_INGOT);
+            blockForStackMap.put(Items.GOLD_INGOT, ModBlocks.GOLD_INGOT);
+            blockForStackMap.put(Items.NETHERITE_INGOT, ModBlocks.NETHERITE_INGOT);
         }
 
-        return blockForStackMap.getOrDefault(stack.getItem(), Blocks.AIR);
+        return blockForStackMap.getOrDefault(item, null);
     }
 }

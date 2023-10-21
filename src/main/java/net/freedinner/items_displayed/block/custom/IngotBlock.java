@@ -1,17 +1,28 @@
 package net.freedinner.items_displayed.block.custom;
 
-import net.freedinner.items_displayed.util.BlockAssociations;
+import net.freedinner.items_displayed.util.BlockItemMapper;
+import net.freedinner.items_displayed.util.BlockPlacer;
 import net.freedinner.items_displayed.util.ModProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class IngotBlock extends AbstractItemBlock {
     public static final int MAX_INGOT_AMOUNT = 3;
@@ -64,14 +75,26 @@ public class IngotBlock extends AbstractItemBlock {
     }
 
     @Override
-    public boolean canReplace(BlockState state, ItemPlacementContext context) {
-        boolean sameItem = BlockAssociations.getStackFor(state.getBlock()).isOf(context.getStack().getItem()) || context.getStack().isOf(this.asItem());
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (!player.shouldCancelInteraction() && shouldAddIngot(player.getStackInHand(hand), state)) {
+            return BlockPlacer.place(state.getBlock(), player, hand, hit);
+        }
 
-        if (!context.shouldCancelInteraction() && sameItem && state.get(INGOTS) < MAX_INGOT_AMOUNT) {
+        return super.onUse(state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public boolean canReplace(BlockState state, ItemPlacementContext context) {
+        if (!context.shouldCancelInteraction() && shouldAddIngot(context.getStack(), state)) {
             return true;
         }
 
         return super.canReplace(state, context);
+    }
+
+    private boolean shouldAddIngot(ItemStack heldItemStack, BlockState state) {
+        boolean sameItem = heldItemStack.isOf(BlockItemMapper.getItemOrNull(state.getBlock()));
+        return sameItem && state.get(INGOTS) < MAX_INGOT_AMOUNT;
     }
 
     @Override

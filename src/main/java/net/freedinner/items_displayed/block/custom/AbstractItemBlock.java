@@ -1,9 +1,10 @@
 package net.freedinner.items_displayed.block.custom;
 
-import net.freedinner.items_displayed.util.BlockAssociations;
+import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -37,7 +38,8 @@ public abstract class AbstractItemBlock extends HorizontalFacingBlock implements
 
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        return BlockAssociations.getStackFor(state.getBlock());
+        Item item = BlockItemMapper.getItemOrNull(state.getBlock());
+        return new ItemStack(item);
     }
 
     @Override

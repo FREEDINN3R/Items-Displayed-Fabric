@@ -1,7 +1,8 @@
 package net.freedinner.items_displayed.entity.custom;
 
 import net.freedinner.items_displayed.item.ModTags;
-import net.freedinner.items_displayed.util.BlockAssociations;
+import net.freedinner.items_displayed.util.BlockItemMapper;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
@@ -10,6 +11,7 @@ import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.RotationAxis;
@@ -47,7 +49,8 @@ public class DisplayedItemFeatureRenderer extends FeatureRenderer<ItemDisplayEnt
             matrices.translate(0f, -0.11f, -1.01f);
         }
 
-        ItemStack blockItemStack = new ItemStack(BlockAssociations.getBlockFor(itemStack).asItem());
+        Item blockItem = BlockItemMapper.getBlockOrNull(itemStack.getItem()).asItem();
+        ItemStack blockItemStack = new ItemStack(blockItem == null ? Blocks.AIR : blockItem);
         this.displayedItemRenderer.renderItem(entity, blockItemStack, ModelTransformationMode.THIRD_PERSON_RIGHT_HAND, false, matrices, vertexConsumers, light);
 
         matrices.pop();
