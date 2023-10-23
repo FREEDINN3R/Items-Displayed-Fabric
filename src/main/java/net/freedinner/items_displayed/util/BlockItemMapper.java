@@ -19,6 +19,14 @@ public class BlockItemMapper {
         }
     }
 
+    public static boolean hasEntryFor(Block block) {
+        return itemForBlockMap.containsKey(block);
+    }
+
+    public static boolean hasEntryFor(Item item) {
+        return blockForItemMap.containsKey(item);
+    }
+
     public static Item getItemOrNull(Block block) {
         return itemForBlockMap.getOrDefault(block, null);
     }

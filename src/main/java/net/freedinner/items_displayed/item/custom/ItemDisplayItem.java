@@ -34,7 +34,7 @@ public class ItemDisplayItem extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
-        if (!ModConfigs.APPEND_TOOLTIPS) {
+        if (!ModConfigs.APPEND_EXTRA_TOOLTIPS) {
             return;
         }
 
