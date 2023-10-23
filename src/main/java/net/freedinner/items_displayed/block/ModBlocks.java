@@ -3,7 +3,6 @@ package net.freedinner.items_displayed.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.item.custom.DebugBlockItem;
-import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.freedinner.items_displayed.util.ModBlockTemplates;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;

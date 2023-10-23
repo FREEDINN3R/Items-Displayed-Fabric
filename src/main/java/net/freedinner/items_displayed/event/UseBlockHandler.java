@@ -25,7 +25,7 @@ public class UseBlockHandler implements UseBlockCallback {
         }
 
         ItemStack heldItemStack = player.getStackInHand(hand);
-        Block block = BlockItemMapper.getBlockOrNull(heldItemStack);
+        Block block = BlockItemMapper.getBlockOrNull(heldItemStack.getItem());
 
         if (block == null) {
             return ActionResult.PASS;

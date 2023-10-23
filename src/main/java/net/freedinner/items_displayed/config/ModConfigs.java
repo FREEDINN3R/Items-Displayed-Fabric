@@ -20,9 +20,9 @@ public class ModConfigs {
     private static final String ITEM_DISPLAY_ROTATION_ANGLE_KEY = "item_display_rotation_angle";
     private static final int ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT = 15;
 
-    /*public static ArrayList<String> BLACKLISTED_ITEMS;
+    public static ArrayList<String> BLACKLISTED_ITEMS;
     private static final String BLACKLISTED_ITEMS_KEY = "blacklisted_items";
-    private static final String BLACKLISTED_ITEMS_DEFAULT = "[ 'minecraft:some_item', 'minecraft:another_item' ]";*/
+    private static final String BLACKLISTED_ITEMS_DEFAULT = "[ 'minecraft:some_item', 'minecraft:another_item' ]";
 
     public static void registerConfigs() {
         ItemsDisplayed.LOGGER.info("Registering configs");
@@ -51,10 +51,11 @@ public class ModConfigs {
         configProvider.addComment("Min value = 1, max value = 90");
         configProvider.addComment("Use only the divisors of 45 (1, 3, 5, etc.) to prevent strange behavior");
         configProvider.addField(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT);
+        configProvider.addComment("");
 
-        /*configProvider.addComment("Blacklisted items which the player shouldn't be able to place");
+        configProvider.addComment("Blacklisted items which the player shouldn't be able to place");
         configProvider.addComment("Use this option in case of incompatibilities with other mods");
-        configProvider.addField(BLACKLISTED_ITEMS_KEY, BLACKLISTED_ITEMS_DEFAULT);*/
+        configProvider.addField(BLACKLISTED_ITEMS_KEY, BLACKLISTED_ITEMS_DEFAULT);
 
         return configProvider;
     }
@@ -65,9 +66,9 @@ public class ModConfigs {
         ITEM_DISPLAY_ROTATION_ANGLE = MathHelper.clamp(
                 CONFIG.getOrDefault(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT), 1, 90
         );
-        /*BLACKLISTED_ITEMS = configArrayToList(
+        BLACKLISTED_ITEMS = configArrayToList(
                 CONFIG.getOrDefault(BLACKLISTED_ITEMS_KEY, BLACKLISTED_ITEMS_DEFAULT)
-        );*/
+        );
     }
 
     private static ArrayList<String> configArrayToList(String s) {
