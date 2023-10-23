@@ -1,6 +1,5 @@
 package net.freedinner.items_displayed.util;
 
-import net.freedinner.items_displayed.ItemsDisplayed;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,7 @@ public class BlockItemMapper {
     }
 
     public static Item getItemOrNull(Block block) {
-        return itemForBlockMap.getOrDefault(block, Items.AIR);
+        return itemForBlockMap.getOrDefault(block, null);
     }
 
     public static Block getBlockOrNull(ItemStack itemStack) {

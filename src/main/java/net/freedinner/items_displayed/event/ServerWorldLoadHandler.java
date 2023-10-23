@@ -14,6 +14,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.lang.reflect.Array;
@@ -27,10 +28,7 @@ public class ServerWorldLoadHandler implements ServerWorldEvents.Load {
                 (Block block) -> Registries.BLOCK.getId(block).getNamespace().equals(ItemsDisplayed.MOD_ID)
         ).forEach(
                 (Block block) -> {
-                    LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder(world)
-                            .add(LootContextParameters.TOOL, ItemStack.EMPTY)
-                            .add(LootContextParameters.ORIGIN, Vec3d.ZERO);
-                    Item item = block.getDefaultState().getDroppedStacks(builder).get(0).getItem();
+                    Item item = Block.getDroppedStacks(block.getDefaultState(), world, BlockPos.ORIGIN, null).get(0).getItem();
                     BlockItemMapper.tryAddEntry(block, item);
                 }
         );
