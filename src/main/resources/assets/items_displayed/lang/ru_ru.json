@@ -2,10 +2,8 @@
   "items_displayed.credit": "Translation made by FREEDINNER",
 
   "item.items_displayed.item_group_name": "Items Displayed",
-
   "item.items_displayed.item_display": "Подставка для предметов",
 
-  "item.items_displayed.tooltip.place": "Можно поставить",
   "item.items_displayed.tooltip.shift_place": "Можно поставить на Shift",
 
   "item.items_displayed.tooltip.shift_more_info": "Зажми Shift для справки",

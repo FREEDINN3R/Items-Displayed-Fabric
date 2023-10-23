@@ -2,10 +2,8 @@
   "items_displayed.credit": "Translation made by xSpleet",
 
   "item.items_displayed.item_group_name": "Items Displayed",
-
   "item.items_displayed.item_display": "Gegenstandsdarsteller",
 
-  "item.items_displayed.tooltip.place": "Kann platziert werden",
   "item.items_displayed.tooltip.shift_place": "Kann platziert werden, während Shift gedrückt wird",
 
   "item.items_displayed.tooltip.shift_more_info": "Shift für weitere Informationen drücken",
