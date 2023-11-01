@@ -34,7 +34,7 @@ public abstract class AbstractItemBlock extends HorizontalFacingBlock implements
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return world.getBlockState(pos.down()).isSolid();
+        return Block.sideCoversSmallSquare(world, pos.down(), Direction.UP);
     }
 
     @Override
