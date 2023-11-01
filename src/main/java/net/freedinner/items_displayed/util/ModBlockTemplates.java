@@ -1,10 +1,7 @@
 package net.freedinner.items_displayed.util;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.freedinner.items_displayed.block.custom.ArmorTrimBlock;
-import net.freedinner.items_displayed.block.custom.IngotBlock;
-import net.freedinner.items_displayed.block.custom.NetheriteUpgradeBlock;
-import net.freedinner.items_displayed.block.custom.SherdBlock;
+import net.freedinner.items_displayed.block.custom.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
@@ -33,6 +30,12 @@ public class ModBlockTemplates {
         return new IngotBlock(defaultSettings()
                 .mapColor(mapColor)
                 .sounds(BlockSoundGroup.NETHERITE));
+    }
+
+    public static Block getDefaultGemstoneBlock(MapColor mapColor) {
+        return new GemstoneBlock(defaultSettings()
+                .mapColor(mapColor)
+                .sounds(BlockSoundGroup.METAL));
     }
 
     private static FabricBlockSettings defaultSettings() {

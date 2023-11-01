@@ -67,6 +67,8 @@ public class ModItemGroups {
                             entries.add(Items.COPPER_INGOT);
                             entries.add(Items.GOLD_INGOT);
                             entries.add(Items.NETHERITE_INGOT);
+
+                            entries.add(Items.DIAMOND);
                         })
                         .build()
         );

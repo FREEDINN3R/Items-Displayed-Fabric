@@ -97,6 +97,9 @@ public class ModBlocks {
     public static final Block NETHERITE_INGOT = registerBlock("netherite_ingot",
             ModBlockTemplates.getDefaultIngotBlock(MapColor.BLACK));
 
+    public static final Block DIAMOND = registerBlock("diamond",
+            ModBlockTemplates.getDefaultGemstoneBlock(MapColor.DIAMOND_BLUE));
+
     private static Block registerBlock(String name, Block block) {
         Block registeredBlock = Registry.register(Registries.BLOCK, new Identifier(ItemsDisplayed.MOD_ID, name), block);
         registerDebugItem(name, registeredBlock);
