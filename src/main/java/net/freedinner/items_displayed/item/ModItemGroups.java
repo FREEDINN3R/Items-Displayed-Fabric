@@ -69,6 +69,7 @@ public class ModItemGroups {
                             entries.add(Items.NETHERITE_INGOT);
 
                             entries.add(Items.DIAMOND);
+                            entries.add(Items.EMERALD);
                         })
                         .build()
         );

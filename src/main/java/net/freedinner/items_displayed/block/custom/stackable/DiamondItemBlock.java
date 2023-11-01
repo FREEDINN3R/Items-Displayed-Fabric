@@ -1,28 +1,15 @@
 package net.freedinner.items_displayed.block.custom.stackable;
 
-import net.freedinner.items_displayed.block.custom.AbstractItemBlock;
-import net.freedinner.items_displayed.util.BlockItemMapper;
-import net.freedinner.items_displayed.util.BlockPlacer;
 import net.freedinner.items_displayed.util.ModProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 
-public class GemstoneBlock extends AbstractStackableItemBlock {
+public class DiamondItemBlock extends AbstractStackableItemBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE_1 =
             Block.createCuboidShape(6.0, 0.0, 5.0, 10.0, 2.0, 11.0);
     public static final VoxelShape EAST_WEST_SHAPE_1 =
@@ -36,7 +23,7 @@ public class GemstoneBlock extends AbstractStackableItemBlock {
     public static final VoxelShape SHAPE_4 =
             Block.createCuboidShape(1.0, 0.0, 1.0, 15.0, 2.0, 15.0);
 
-    public GemstoneBlock(Settings settings) {
+    public DiamondItemBlock(Settings settings) {
         super(settings);
     }
 
