@@ -2,6 +2,8 @@ package net.freedinner.items_displayed.util;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.freedinner.items_displayed.block.custom.*;
+import net.freedinner.items_displayed.block.custom.stackable.GemstoneBlock;
+import net.freedinner.items_displayed.block.custom.stackable.IngotBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
