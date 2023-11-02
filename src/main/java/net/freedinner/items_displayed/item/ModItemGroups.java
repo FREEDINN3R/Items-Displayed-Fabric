@@ -70,6 +70,7 @@ public class ModItemGroups {
 
                             entries.add(Items.DIAMOND);
                             entries.add(Items.EMERALD);
+                            entries.add(Items.LAPIS_LAZULI);
                         })
                         .build()
         );

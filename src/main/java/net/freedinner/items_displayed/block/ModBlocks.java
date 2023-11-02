@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.block.custom.stackable.DiamondItemBlock;
 import net.freedinner.items_displayed.block.custom.stackable.EmeraldItemBlock;
+import net.freedinner.items_displayed.block.custom.stackable.LapisLazuliItemBlock;
 import net.freedinner.items_displayed.item.custom.DebugBlockItem;
 import net.freedinner.items_displayed.util.ModTemplates;
 import net.minecraft.block.Block;
@@ -103,6 +104,8 @@ public class ModBlocks {
             new DiamondItemBlock(ModTemplates.getDefaultGemstoneSettings(MapColor.DIAMOND_BLUE)));
     public static final Block EMERALD = registerBlock("emerald",
             new EmeraldItemBlock(ModTemplates.getDefaultGemstoneSettings(MapColor.EMERALD_GREEN)));
+    public static final Block LAPIS_LAZULI = registerBlock("lapis_lazuli",
+            new LapisLazuliItemBlock(ModTemplates.getDefaultGemstoneSettings(MapColor.LAPIS_BLUE)));
 
     private static Block registerBlock(String name, Block block) {
         Block registeredBlock = Registry.register(Registries.BLOCK, new Identifier(ItemsDisplayed.MOD_ID, name), block);
