@@ -14,14 +14,12 @@ public class DiamondItemBlock extends AbstractStackableItemBlock {
             Block.createCuboidShape(6.0, 0.0, 5.0, 10.0, 2.0, 11.0);
     public static final VoxelShape EAST_WEST_SHAPE_1 =
             Block.createCuboidShape(5.0, 0.0, 6.0, 11.0, 2.0, 10.0);
-    public static final VoxelShape NORTH_SOUTH_SHAPE_2 =
-            Block.createCuboidShape(3.0, 0.0, 2.0, 13.0, 2.0, 14.0);
-    public static final VoxelShape EAST_WEST_SHAPE_2 =
-            Block.createCuboidShape(2.0, 0.0, 3.0, 14.0, 2.0, 13.0);
+    public static final VoxelShape SHAPE_2 =
+            Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 2.0, 14.0);
     public static final VoxelShape SHAPE_3 =
             Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 2.0, 14.0);
     public static final VoxelShape SHAPE_4 =
-            Block.createCuboidShape(1.0, 0.0, 1.0, 15.0, 2.0, 15.0);
+            Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
 
     public DiamondItemBlock(Settings settings) {
         super(settings);
@@ -42,11 +40,7 @@ public class DiamondItemBlock extends AbstractStackableItemBlock {
                 case EAST, WEST -> EAST_WEST_SHAPE_1;
                 default -> throw new IllegalStateException("Unexpected value: " + state.get(FACING));
             };
-            case 2 -> switch (state.get(FACING)) {
-                case NORTH, SOUTH -> NORTH_SOUTH_SHAPE_2;
-                case EAST, WEST -> EAST_WEST_SHAPE_2;
-                default -> throw new IllegalStateException("Unexpected value: " + state.get(FACING));
-            };
+            case 2 -> SHAPE_2;
             case 3 -> SHAPE_3;
             case 4 -> SHAPE_4;
             default -> throw new IllegalStateException("Unexpected value: " + currItemCount);

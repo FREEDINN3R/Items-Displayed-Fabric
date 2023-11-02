@@ -7,8 +7,8 @@
 	"elements": [
 		{
 			"name": "diamond 1",
-			"from": [10, 0, 2],
-			"to": [14, 2, 8],
+			"from": [9, 0, 2],
+			"to": [13, 2, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [-1, 0, -1]},
 			"faces": {
 				"north": {"uv": [0, 8, 4, 10], "texture": "#0"},

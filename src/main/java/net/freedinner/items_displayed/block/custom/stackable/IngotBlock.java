@@ -13,14 +13,10 @@ public class IngotBlock extends AbstractStackableItemBlock {
             Block.createCuboidShape(5.5, 0.0, 3.0, 10.5, 3.0, 13.0);
     public static final VoxelShape EAST_WEST_SHAPE_1 =
             Block.createCuboidShape(3.0, 0.0, 5.5, 13.0, 3.0, 10.5);
-    public static final VoxelShape NORTH_SOUTH_SHAPE_2 =
-            Block.createCuboidShape(1.0, 0.0, 2.5, 15.0, 3.0, 13.5);
-    public static final VoxelShape EAST_WEST_SHAPE_2 =
-            Block.createCuboidShape(2.5, 0.0, 1.0, 13.5, 3.0, 15.0);
-    public static final VoxelShape NORTH_SOUTH_SHAPE_3 =
-            Block.createCuboidShape(2.0, 0.0, 3.0, 14.0, 6.0, 13.0);
-    public static final VoxelShape EAST_WEST_SHAPE_3 =
-            Block.createCuboidShape(3.0, 0.0, 2.0, 13.0, 6.0, 14.0);
+    public static final VoxelShape SHAPE_2 =
+            Block.createCuboidShape(1.0, 0.0, 1.0, 15.0, 3.0, 15.0);
+    public static final VoxelShape SHAPE_3 =
+            Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
 
     public IngotBlock(AbstractBlock.Settings settings) {
         super(settings);
@@ -35,20 +31,15 @@ public class IngotBlock extends AbstractStackableItemBlock {
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         int currItemCount = state.get(getItemProperty());
 
-        return switch (state.get(FACING)) {
-            case NORTH, SOUTH -> switch (currItemCount) {
-                case 1 -> NORTH_SOUTH_SHAPE_1;
-                case 2 -> NORTH_SOUTH_SHAPE_2;
-                case 3 -> NORTH_SOUTH_SHAPE_3;
-                default -> throw new IllegalStateException("Unexpected value: " + currItemCount);
+        return switch (currItemCount) {
+            case 1 -> switch (state.get(FACING)) {
+                case NORTH, SOUTH -> NORTH_SOUTH_SHAPE_1;
+                case EAST, WEST -> EAST_WEST_SHAPE_1;
+                default -> throw new IllegalStateException("Unexpected value: " + state.get(FACING));
             };
-            case EAST, WEST -> switch (currItemCount) {
-                case 1 -> EAST_WEST_SHAPE_1;
-                case 2 -> EAST_WEST_SHAPE_2;
-                case 3 -> EAST_WEST_SHAPE_3;
-                default -> throw new IllegalStateException("Unexpected value: " + currItemCount);
-            };
-            default -> throw new IllegalStateException("Unexpected value: " + state.get(FACING));
+            case 2 -> SHAPE_2;
+            case 3 -> SHAPE_3;
+            default -> throw new IllegalStateException("Unexpected value: " + currItemCount);
         };
     }
 }
