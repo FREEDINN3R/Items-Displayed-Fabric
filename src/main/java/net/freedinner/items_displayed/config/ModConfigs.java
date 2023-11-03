@@ -49,7 +49,7 @@ public class ModConfigs {
         configProvider.addComment("Min angle by which Item Display entity can be rotated");
         configProvider.addComment("Example: for Armor Stands this value is 45, and its rotation snaps to the closest 45-degree angle");
         configProvider.addComment("Min value = 1, max value = 90");
-        configProvider.addComment("Use only the divisors of 45 (1, 3, 5, etc.) to prevent strange behavior");
+        configProvider.addComment("Use only the divisors of 90 (3, 5, 15, etc.) to prevent strange behavior");
         configProvider.addField(ITEM_DISPLAY_ROTATION_ANGLE_KEY, ITEM_DISPLAY_ROTATION_ANGLE_DEFAULT);
         configProvider.addComment("");
 
