@@ -20,7 +20,7 @@ public class ModItemGroups {
                 new Identifier(ItemsDisplayed.MOD_ID, "item_group"),
                 FabricItemGroup.builder()
                         .displayName(Text.translatable("item.items_displayed.item_group_name"))
-                        .icon(() -> new ItemStack(Blocks.CRAFTING_TABLE))
+                        .icon(() -> new ItemStack(ModItems.ITEM_DISPLAY))
                         .entries((displayContext, entries) -> {
                             entries.add(ModItems.ITEM_DISPLAY);
 
