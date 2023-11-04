@@ -2,10 +2,8 @@
   "items_displayed.credit": "Translation made by ChatGPT; review from a native is needed!",
 
   "item.items_displayed.item_group_name": "Items Displayed",
-
   "item.items_displayed.item_display": "アイテム表示",
 
-  "item.items_displayed.tooltip.place": "配置可能",
   "item.items_displayed.tooltip.shift_place": "Shift を押しながら配置可能",
 
   "item.items_displayed.tooltip.shift_more_info": "詳細情報には Shift を押してください",

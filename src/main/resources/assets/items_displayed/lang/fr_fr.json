@@ -2,10 +2,8 @@
   "items_displayed.credit": "Translation made by ChatGPT; review from a native is needed!",
 
   "item.items_displayed.item_group_name": "Items Displayed",
-
   "item.items_displayed.item_display": "Affichage d'Objet",
 
-  "item.items_displayed.tooltip.place": "Peut être placé",
   "item.items_displayed.tooltip.shift_place": "Peut être placé en maintenant Maj enfoncée",
 
   "item.items_displayed.tooltip.shift_more_info": "Appuyez sur Maj pour plus d'informations",

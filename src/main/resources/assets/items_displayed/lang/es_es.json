@@ -2,10 +2,8 @@
   "items_displayed.credit": "Translation made by ChatGPT; review from a native is needed!",
 
   "item.items_displayed.item_group_name": "Items Displayed",
-
   "item.items_displayed.item_display": "Mostrar Objeto",
 
-  "item.items_displayed.tooltip.place": "Puede ser colocado",
   "item.items_displayed.tooltip.shift_place": "Puede ser colocado al sostener Shift",
 
   "item.items_displayed.tooltip.shift_more_info": "Presiona Shift para más información",

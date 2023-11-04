@@ -20,7 +20,7 @@ public class ModItemGroups {
                 new Identifier(ItemsDisplayed.MOD_ID, "item_group"),
                 FabricItemGroup.builder()
                         .displayName(Text.translatable("item.items_displayed.item_group_name"))
-                        .icon(() -> new ItemStack(Blocks.CRAFTING_TABLE))
+                        .icon(() -> new ItemStack(ModItems.ITEM_DISPLAY))
                         .entries((displayContext, entries) -> {
                             entries.add(ModItems.ITEM_DISPLAY);
 
@@ -46,7 +46,6 @@ public class ModItemGroups {
                             entries.add(Items.SNORT_POTTERY_SHERD);
 
                             entries.add(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
-
                             entries.add(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE);
                             entries.add(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE);
                             entries.add(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE);
@@ -68,6 +67,10 @@ public class ModItemGroups {
                             entries.add(Items.COPPER_INGOT);
                             entries.add(Items.GOLD_INGOT);
                             entries.add(Items.NETHERITE_INGOT);
+
+                            entries.add(Items.DIAMOND);
+                            entries.add(Items.EMERALD);
+                            entries.add(Items.LAPIS_LAZULI);
                         })
                         .build()
         );

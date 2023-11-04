@@ -1,11 +1,13 @@
 package net.freedinner.items_displayed.block.custom;
 
-import net.freedinner.items_displayed.util.BlockAssociations;
+import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -32,12 +34,13 @@ public abstract class AbstractItemBlock extends HorizontalFacingBlock implements
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return world.getBlockState(pos.down()).isSolid();
+        return Block.sideCoversSmallSquare(world, pos.down(), Direction.UP);
     }
 
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        return BlockAssociations.getStackFor(state.getBlock());
+        Item item = BlockItemMapper.getItemOrNull(state.getBlock(), true);
+        return new ItemStack(item);
     }
 
     @Override
