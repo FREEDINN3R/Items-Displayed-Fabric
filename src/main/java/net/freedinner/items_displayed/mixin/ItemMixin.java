@@ -22,7 +22,7 @@ public abstract class ItemMixin {
     private void onAppendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         Item currentItem = (Item)(Object)this;
 
-        if (ModConfigs.APPEND_ITEM_TOOLTIPS && BlockItemMapper.hasEntryFor(currentItem)) {
+        if (ModConfigs.APPEND_ITEM_TOOLTIPS && BlockItemMapper.getBlockOrNull(currentItem) != null) {
             tooltip.add(Text.translatable("item.items_displayed.tooltip.shift_place").formatted(Formatting.GRAY));
         }
     }

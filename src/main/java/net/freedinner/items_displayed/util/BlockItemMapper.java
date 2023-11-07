@@ -1,41 +1,51 @@
 package net.freedinner.items_displayed.util;
 
+import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BlockItemMapper {
-    private static final Map<Block, Item> itemForBlockMap = new HashMap<>();
-    private static final Map<Item, Block> blockForItemMap = new HashMap<>();
+    private static Map<Block, Item> itemForBlockMap = new HashMap<>();
+    private static Map<Item, Block> blockForItemMap = new HashMap<>();
 
-    private static final Map<Block, Item> itemForBlockMapBlacklisted = new HashMap<>();
-    private static final Map<Item, Block> blockForItemMapBlacklisted = new HashMap<>();
+    private static List<Item> blacklistedItems = new ArrayList<>();
 
-    public static void tryAddEntry(Block block, Item item) {
-        String itemId = Registries.ITEM.getId(item).toString();
-
-        if (ModConfigs.BLACKLISTED_ITEMS.contains(itemId)) {
-            itemForBlockMapBlacklisted.put(block, item);
-            blockForItemMapBlacklisted.put(item, block);
-            return;
-        }
-
+    public static void addEntry(Block block, Item item) {
         itemForBlockMap.put(block, item);
         blockForItemMap.put(item, block);
+
+        String itemId = Registries.ITEM.getId(item).toString();
+        if (ModConfigs.BLACKLISTED_ITEMS.contains(itemId)) {
+            blacklistedItems.add(item);
+        }
     }
 
-    public static boolean hasEntryFor(Block block) {
-        return itemForBlockMap.containsKey(block);
+    public static void writeDataToPacket(PacketByteBuf packet) {
+        PacketByteBuf.PacketWriter<Block> blockWriter = (buf, block) -> buf.writeIdentifier(Registries.BLOCK.getId(block));
+        PacketByteBuf.PacketWriter<Item> itemWriter = (buf, item) -> buf.writeIdentifier(Registries.ITEM.getId(item));
+
+        packet.writeMap(itemForBlockMap, blockWriter, itemWriter);
+        packet.writeCollection(blacklistedItems, itemWriter);
     }
 
-    public static boolean hasEntryFor(Item item) {
-        return blockForItemMap.containsKey(item);
+    public static void loadDataFromPacket(PacketByteBuf packet) {
+        PacketByteBuf.PacketReader<Block> blockReader = (buf) -> Registries.BLOCK.get(buf.readIdentifier());
+        PacketByteBuf.PacketReader<Item> itemReader = (buf) -> Registries.ITEM.get(buf.readIdentifier());
+
+        itemForBlockMap = packet.readMap(blockReader, itemReader);
+        blockForItemMap = itemForBlockMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+
+        blacklistedItems = packet.readList(itemReader);
     }
 
     public static Item getItemOrNull(Block block) {
@@ -49,20 +59,18 @@ public class BlockItemMapper {
     public static Item getItemOrNull(Block block, boolean includeBlacklisted) {
         Item foundItem = itemForBlockMap.getOrDefault(block, null);
 
-        if (foundItem != null || !includeBlacklisted) {
-            return foundItem;
+        if (blacklistedItems.contains(foundItem) && !includeBlacklisted) {
+            return null;
         }
 
-        return itemForBlockMapBlacklisted.getOrDefault(block, null);
+        return foundItem;
     }
 
     public static Block getBlockOrNull(Item item, boolean includeBlacklisted) {
-        Block foundBlock = blockForItemMap.getOrDefault(item, null);
-
-        if (foundBlock != null || !includeBlacklisted) {
-            return foundBlock;
+        if (blacklistedItems.contains(item) && !includeBlacklisted) {
+            return null;
         }
 
-        return blockForItemMapBlacklisted.getOrDefault(item, null);
+        return blockForItemMap.getOrDefault(item, null);
     }
 }
