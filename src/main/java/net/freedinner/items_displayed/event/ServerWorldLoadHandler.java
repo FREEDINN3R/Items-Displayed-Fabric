@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos;
 public class ServerWorldLoadHandler implements ServerWorldEvents.Load {
     @Override
     public void onWorldLoad(MinecraftServer server, ServerWorld world) {
+        ItemsDisplayed.LOGGER.info("server world loaded");
+
         Registries.BLOCK.stream().filter(
                 (Block block) -> Registries.BLOCK.getId(block).getNamespace().equals(ItemsDisplayed.MOD_ID)
         ).forEach(
