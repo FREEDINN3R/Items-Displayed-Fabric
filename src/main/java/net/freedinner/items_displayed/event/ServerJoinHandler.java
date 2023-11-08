@@ -15,8 +15,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 public class ServerJoinHandler implements ServerPlayConnectionEvents.Join {
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-        ItemsDisplayed.LOGGER.info("player joined the server");
-
         PacketByteBuf buf = PacketByteBufs.create();
         BlockItemMapper.writeDataToPacket(buf);
 

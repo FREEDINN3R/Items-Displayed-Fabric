@@ -7,10 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BlockItemMapper {
@@ -33,7 +30,12 @@ public class BlockItemMapper {
         PacketByteBuf.PacketWriter<Block> blockWriter = (buf, block) -> buf.writeIdentifier(Registries.BLOCK.getId(block));
         PacketByteBuf.PacketWriter<Item> itemWriter = (buf, item) -> buf.writeIdentifier(Registries.ITEM.getId(item));
 
-        packet.writeMap(itemForBlockMap, blockWriter, itemWriter);
+        PacketByteBuf.PacketWriter<Map.Entry<Block, Item>> entryWriter = (buf, blockItemEntry) -> {
+            blockWriter.accept(buf, blockItemEntry.getKey());
+            itemWriter.accept(buf, blockItemEntry.getValue());
+        };
+
+        packet.writeCollection(itemForBlockMap.entrySet(), entryWriter);
         packet.writeCollection(blacklistedItems, itemWriter);
     }
 
@@ -41,7 +43,14 @@ public class BlockItemMapper {
         PacketByteBuf.PacketReader<Block> blockReader = (buf) -> Registries.BLOCK.get(buf.readIdentifier());
         PacketByteBuf.PacketReader<Item> itemReader = (buf) -> Registries.ITEM.get(buf.readIdentifier());
 
-        itemForBlockMap = packet.readMap(blockReader, itemReader);
+        PacketByteBuf.PacketReader<Map.Entry<Block, Item>> entryReader =
+                (buf) -> Map.entry(blockReader.apply(buf), itemReader.apply(buf));
+
+
+        itemForBlockMap = new HashMap<>();
+        for(Map.Entry<Block, Item> entry : packet.readCollection(HashSet::new, entryReader)) {
+            itemForBlockMap.put(entry.getKey(), entry.getValue());
+        }
         blockForItemMap = itemForBlockMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
