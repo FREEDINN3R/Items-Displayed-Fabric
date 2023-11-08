@@ -22,9 +22,5 @@ public class ItemsDisplayedClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		EntityRendererRegistry.register(ModEntities.ITEM_DISPLAY, ItemDisplayEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(ITEM_DISPLAY_MODEL_LAYER, ItemDisplayEntityModel::getTexturedModelData);
-
-		ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CLIENT_LOAD_ASSOCIATIONS_ID, (client, handler, buf, responseSender) -> {
-			client.execute(() -> BlockItemMapper.loadDataFromPacket(buf));
-		});
 	}
 }
