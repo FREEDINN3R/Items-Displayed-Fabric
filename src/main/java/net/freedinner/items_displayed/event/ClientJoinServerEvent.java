@@ -10,7 +10,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 
-public class ServerJoinHandler implements ServerPlayConnectionEvents.Join {
+public class ClientJoinServerEvent implements ServerPlayConnectionEvents.Join {
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         PacketByteBuf buf = PacketByteBufs.create();

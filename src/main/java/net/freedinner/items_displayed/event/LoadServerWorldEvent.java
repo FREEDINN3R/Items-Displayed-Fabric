@@ -10,7 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class ServerWorldLoadHandler implements ServerWorldEvents.Load {
+public class LoadServerWorldEvent implements ServerWorldEvents.Load {
     @Override
     public void onWorldLoad(MinecraftServer server, ServerWorld world) {
         Registries.BLOCK.stream().filter(this::fromThisMod).forEach(
