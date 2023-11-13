@@ -13,15 +13,16 @@ import net.minecraft.util.math.BlockPos;
 public class ServerWorldLoadHandler implements ServerWorldEvents.Load {
     @Override
     public void onWorldLoad(MinecraftServer server, ServerWorld world) {
-        ItemsDisplayed.LOGGER.info("server world loaded");
-
-        Registries.BLOCK.stream().filter(
-                (Block block) -> Registries.BLOCK.getId(block).getNamespace().equals(ItemsDisplayed.MOD_ID)
-        ).forEach(
-                (Block block) -> {
-                    Item item = Block.getDroppedStacks(block.getDefaultState(), world, BlockPos.ORIGIN, null).get(0).getItem();
-                    BlockItemMapper.addEntry(block, item);
-                }
+        Registries.BLOCK.stream().filter(this::fromThisMod).forEach(
+                (Block block) -> BlockItemMapper.addEntry(block, getDroppedItem(block, world))
         );
+    }
+
+    private boolean fromThisMod(Block block) {
+        return Registries.BLOCK.getId(block).getNamespace().equals(ItemsDisplayed.MOD_ID);
+    }
+
+    private Item getDroppedItem(Block block, ServerWorld world) {
+        return Block.getDroppedStacks(block.getDefaultState(), world, BlockPos.ORIGIN, null).get(0).getItem();
     }
 }
