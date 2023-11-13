@@ -7,9 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class BlockItemMapper {
     private static BiMap<Block, Item> blockItemMap = HashBiMap.create();
@@ -19,17 +19,11 @@ public class BlockItemMapper {
     }
 
     public static void writeDataToPacket(PacketByteBuf packet) {
-        PacketByteBuf.PacketWriter<Block> blockWriter = (buf, block) -> buf.writeIdentifier(Registries.BLOCK.getId(block));
-        PacketByteBuf.PacketWriter<Item> itemWriter = (buf, item) -> buf.writeIdentifier(Registries.ITEM.getId(item));
-
-        packet.writeMap(blockItemMap, blockWriter, itemWriter);
+        MapWriter.writeMapToPacket(blockItemMap, packet);
     }
 
     public static void loadDataFromPacket(PacketByteBuf packet) {
-        PacketByteBuf.PacketReader<Block> blockReader = (buf) -> Registries.BLOCK.get(buf.readIdentifier());
-        PacketByteBuf.PacketReader<Item> itemReader = (buf) -> Registries.ITEM.get(buf.readIdentifier());
-
-        blockItemMap = HashBiMap.create(packet.readMap(blockReader, itemReader));
+        blockItemMap = MapWriter.readMapFromPacket(packet);
     }
 
     public static Item getItemOrNull(Block block) {
@@ -61,5 +55,35 @@ public class BlockItemMapper {
     public static boolean isItemBlacklisted(Item item) {
         String itemId = Registries.ITEM.getId(item).toString();
         return ModConfigs.BLACKLISTED_ITEMS.contains(itemId);
+    }
+
+    private static class MapWriter {
+        public static void writeMapToPacket(BiMap<Block, Item> map, PacketByteBuf packet) {
+            packet.writeInt(map.size());
+            map.forEach((key, value) -> {
+                Identifier blockId = Registries.BLOCK.getId(key);
+                packet.writeIdentifier(blockId);
+
+                Identifier itemId = Registries.ITEM.getId(value);
+                packet.writeIdentifier(itemId);
+            });
+        }
+
+        public static BiMap<Block, Item> readMapFromPacket(PacketByteBuf packet) {
+            BiMap<Block, Item> map = HashBiMap.create();
+            int size = packet.readInt();
+
+            for (int i = 0; i < size; i++) {
+                Identifier blockId = packet.readIdentifier();
+                Block block = Registries.BLOCK.get(blockId);
+
+                Identifier itemId = packet.readIdentifier();
+                Item item = Registries.ITEM.get(itemId);
+
+                map.put(block, item);
+            }
+
+            return map;
+        }
     }
 }
