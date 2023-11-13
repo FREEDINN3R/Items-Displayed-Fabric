@@ -1,76 +1,65 @@
 package net.freedinner.items_displayed.util;
 
-import net.freedinner.items_displayed.ItemsDisplayed;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.freedinner.items_displayed.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BlockItemMapper {
-    private static Map<Block, Item> itemForBlockMap = new HashMap<>();
-    private static Map<Item, Block> blockForItemMap = new HashMap<>();
-
-    private static List<Item> blacklistedItems = new ArrayList<>();
+    private static BiMap<Block, Item> blockItemMap = HashBiMap.create();
 
     public static void addEntry(Block block, Item item) {
-        itemForBlockMap.put(block, item);
-        blockForItemMap.put(item, block);
-
-        String itemId = Registries.ITEM.getId(item).toString();
-        if (ModConfigs.BLACKLISTED_ITEMS.contains(itemId)) {
-            blacklistedItems.add(item);
-        }
+        blockItemMap.put(block, item);
     }
 
     public static void writeDataToPacket(PacketByteBuf packet) {
         PacketByteBuf.PacketWriter<Block> blockWriter = (buf, block) -> buf.writeIdentifier(Registries.BLOCK.getId(block));
         PacketByteBuf.PacketWriter<Item> itemWriter = (buf, item) -> buf.writeIdentifier(Registries.ITEM.getId(item));
 
-        packet.writeMap(itemForBlockMap, blockWriter, itemWriter);
-        packet.writeCollection(blacklistedItems, itemWriter);
+        packet.writeMap(blockItemMap, blockWriter, itemWriter);
     }
 
     public static void loadDataFromPacket(PacketByteBuf packet) {
         PacketByteBuf.PacketReader<Block> blockReader = (buf) -> Registries.BLOCK.get(buf.readIdentifier());
         PacketByteBuf.PacketReader<Item> itemReader = (buf) -> Registries.ITEM.get(buf.readIdentifier());
 
-        itemForBlockMap = packet.readMap(blockReader, itemReader);
-        blockForItemMap = itemForBlockMap.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
-
-        blacklistedItems = packet.readList(itemReader);
+        blockItemMap = HashBiMap.create(packet.readMap(blockReader, itemReader));
     }
 
     public static Item getItemOrNull(Block block) {
         return getItemOrNull(block, false);
     }
 
-    public static Block getBlockOrNull(Item item) {
-        return getBlockOrNull(item, false);
-    }
-
     public static Item getItemOrNull(Block block, boolean includeBlacklisted) {
-        Item foundItem = itemForBlockMap.getOrDefault(block, null);
+        Item foundItem = blockItemMap.getOrDefault(block, null);
 
-        if (blacklistedItems.contains(foundItem) && !includeBlacklisted) {
+        if (isItemBlacklisted(foundItem) && !includeBlacklisted) {
             return null;
         }
 
         return foundItem;
     }
 
+    public static Block getBlockOrNull(Item item) {
+        return getBlockOrNull(item, false);
+    }
+
     public static Block getBlockOrNull(Item item, boolean includeBlacklisted) {
-        if (blacklistedItems.contains(item) && !includeBlacklisted) {
+        if (isItemBlacklisted(item) && !includeBlacklisted) {
             return null;
         }
 
-        return blockForItemMap.getOrDefault(item, null);
+        return blockItemMap.inverse().getOrDefault(item, null);
+    }
+
+    public static boolean isItemBlacklisted(Item item) {
+        String itemId = Registries.ITEM.getId(item).toString();
+        return ModConfigs.BLACKLISTED_ITEMS.contains(itemId);
     }
 }
