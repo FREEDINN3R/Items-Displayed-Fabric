@@ -1,7 +1,7 @@
 # Items Displayed
 Did you ever think that there aren't any good ways to show off your stuff in Minecraft? Sure, we have item frames, but that's just plain old boring. If you're like me, then you'd prefer having your treasures displayed as 3D models in the world, not cluttering your chests.
 
-Let me introduce you to Items Displayed! Designed for both daring adventurers and imaginative builders, this Fabric mod aims to redefine the way you store items and decorate your base.
+Let me introduce you to Items Displayed! Designed for both daring adventurers and imaginative builders, this mod aims to redefine the way you store items and decorate your base.
 
 ![all smithing templates lying on the ground](/images/p1.png)
 
