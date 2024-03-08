@@ -13,6 +13,5 @@ public class ModEventHandlers {
         UseBlockCallback.EVENT.register(new UseBlockEvent());
         ServerWorldEvents.LOAD.register(new LoadServerWorldEvent());
         ServerPlayConnectionEvents.JOIN.register(new ClientJoinServerEvent());
-        ItemTooltipCallback.EVENT.register(new RenderTooltipEvent());
     }
 }
