@@ -1,5 +1,8 @@
 package net.freedinner.items_displayed.block.custom.stackable;
 
+import com.mojang.serialization.MapCodec;
+import net.freedinner.items_displayed.block.custom.AbstractItemBlock;
+import net.freedinner.items_displayed.block.custom.ArmorTrimBlock;
 import net.freedinner.items_displayed.util.ModProperties;
 import net.minecraft.block.*;
 import net.minecraft.state.property.IntProperty;
@@ -18,8 +21,15 @@ public class IngotBlock extends AbstractStackableItemBlock {
     public static final VoxelShape SHAPE_3 =
             Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
 
+    private static final MapCodec<? extends HorizontalFacingBlock> CODEC = AbstractItemBlock.createCodec(IngotBlock::new);
+
     public IngotBlock(AbstractBlock.Settings settings) {
         super(settings);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package net.freedinner.items_displayed.block.custom;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -14,8 +12,15 @@ public class ArmorTrimBlock extends AbstractItemBlock implements Waterloggable {
     private static final VoxelShape EAST_WEST_SHAPE =
             Block.createCuboidShape(2, 0, 4, 14, 4, 12);
 
+    private static final MapCodec<? extends HorizontalFacingBlock> CODEC = AbstractItemBlock.createCodec(ArmorTrimBlock::new);
+
     public ArmorTrimBlock(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 
     @Override
