@@ -2,6 +2,7 @@ package net.freedinner.items_displayed.entity.custom;
 
 import net.freedinner.items_displayed.item.ModTags;
 import net.freedinner.items_displayed.util.BlockItemMapper;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
@@ -49,8 +50,8 @@ public class DisplayedItemFeatureRenderer extends FeatureRenderer<ItemDisplayEnt
             matrices.translate(0f, -0.11f, -1.01f);
         }
 
-        Item blockItem = BlockItemMapper.getBlockOrNull(itemStack.getItem(), true).asItem();
-        ItemStack blockItemStack = new ItemStack(blockItem == null ? Blocks.AIR : blockItem);
+        Block block = BlockItemMapper.getBlockOrNull(itemStack.getItem(), true);
+        ItemStack blockItemStack = new ItemStack(block == null ? Blocks.AIR : block.asItem());
         this.displayedItemRenderer.renderItem(entity, blockItemStack, ModelTransformationMode.THIRD_PERSON_RIGHT_HAND, false, matrices, vertexConsumers, light);
 
         matrices.pop();
