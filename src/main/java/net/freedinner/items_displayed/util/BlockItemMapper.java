@@ -2,6 +2,7 @@ package net.freedinner.items_displayed.util;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -60,6 +61,7 @@ public class BlockItemMapper {
     private static class MapWriter {
         public static void writeMapToPacket(BiMap<Block, Item> map, PacketByteBuf packet) {
             packet.writeInt(map.size());
+
             map.forEach((key, value) -> {
                 Identifier blockId = Registries.BLOCK.getId(key);
                 packet.writeIdentifier(blockId);

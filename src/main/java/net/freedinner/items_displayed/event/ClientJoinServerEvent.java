@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.networking.NetworkingConstants;
 import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.minecraft.network.PacketByteBuf;

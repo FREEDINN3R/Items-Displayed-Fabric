@@ -26,7 +26,7 @@ public class ItemsDisplayedClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(ITEM_DISPLAY_MODEL_LAYER, ItemDisplayEntityModel::getTexturedModelData);
 
 		ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CLIENT_LOAD_MAPS_ID, (client, handler, buf, responseSender) -> {
-			client.execute(() -> BlockItemMapper.loadDataFromPacket(buf));
+			BlockItemMapper.loadDataFromPacket(buf);
 		});
 
 		ItemTooltipCallback.EVENT.register(new RenderTooltipEvent());
