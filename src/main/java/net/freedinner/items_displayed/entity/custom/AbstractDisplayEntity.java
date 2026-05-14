@@ -1,34 +1,32 @@
 package net.freedinner.items_displayed.entity.custom;
 
-import net.freedinner.items_displayed.item.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class AbstractDisplayEntity extends LivingEntity {
     protected static final float DEFAULT_ENTITY_ROTATION = 0.0f;
-    public static final TrackedData<Float> ENTITY_ROTATION_TRACKER = DataTracker.registerData(AbstractDisplayEntity.class, TrackedDataHandlerRegistry.FLOAT);
-    protected static final Predicate<Entity> RIDEABLE_MINECART_PREDICATE = entity -> entity instanceof AbstractMinecartEntity && ((AbstractMinecartEntity)entity).getMinecartType() == AbstractMinecartEntity.Type.RIDEABLE;
+    public static final EntityDataAccessor<Float> ENTITY_ROTATION_TRACKER = SynchedEntityData.defineId(AbstractDisplayEntity.class, EntityDataSerializers.FLOAT);
+    protected static final Predicate<Entity> RIDEABLE_MINECART_PREDICATE = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart)entity).getMinecartType() == AbstractMinecart.Type.RIDEABLE;
     protected static final String DISPLAYED_ITEM_NBT_KEY = "displayed_item";
     protected static final String ENTITY_ROTATION_NBT_KEY = "display_entity_rotation";
 
@@ -36,7 +34,7 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     protected float entityRotation = DEFAULT_ENTITY_ROTATION;
     public long lastHitTime;
 
-    protected AbstractDisplayEntity(EntityType<? extends LivingEntity> entityType, World world) {
+    protected AbstractDisplayEntity(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -52,69 +50,69 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     protected abstract SoundEvent getHitSound();
 
 
-    protected boolean tryDisplayItem(PlayerEntity player, ItemStack stack, Hand hand) {
+    protected boolean tryDisplayItem(Player player, ItemStack stack, InteractionHand hand) {
         if (stack.isEmpty()) {
             if (displayedItem.isEmpty()) {
                 return false;
             }
 
-            player.setStackInHand(hand, displayedItem);
-            equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            player.setItemInHand(hand, displayedItem);
+            setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
             return true;
         }
 
-        if (!displayedItem.isEmpty() || !canEquip(stack)) {
+        if (!displayedItem.isEmpty() || !canTakeItem(stack)) {
             return false;
         }
 
-        equipStack(EquipmentSlot.MAINHAND, stack.copyWithCount(1));
-        if (!player.getAbilities().creativeMode) {
-            stack.decrement(1);
+        setItemSlot(EquipmentSlot.MAINHAND, stack.copyWithCount(1));
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
         }
 
         playPutSound();
         return true;
     }
 
-    protected void breakAndDropItem(ServerWorld world, DamageSource damageSource) {
+    protected void breakAndDropItem(ServerLevel world, DamageSource damageSource) {
         ItemStack itemStack = new ItemStack(this.getEntityItem());
-        Block.dropStack(getWorld(), getBlockPos(), itemStack);
+        Block.popResource(level(), blockPosition(), itemStack);
         onBreak(world, damageSource);
     }
     
-    protected void updateHealth(ServerWorld world, DamageSource damageSource, float amount) {
+    protected void updateHealth(ServerLevel world, DamageSource damageSource, float amount) {
         float f = getHealth() - amount;
         if (f <= 0.5f) {
             onBreak(world, damageSource);
             kill();
         } else {
             setHealth(f);
-            emitGameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getAttacker());
+            gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
         }
     }
 
-    protected void onBreak(ServerWorld world, DamageSource damageSource) {
+    protected void onBreak(ServerLevel world, DamageSource damageSource) {
         playBreakSound();
-        drop(world, damageSource);
+        dropAllDeathLoot(world, damageSource);
 
         if (!displayedItem.isEmpty()) {
-            Block.dropStack(getWorld(), getBlockPos(), displayedItem);
+            Block.popResource(level(), blockPosition(), displayedItem);
             displayedItem = ItemStack.EMPTY;
         }
     }
 
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(ENTITY_ROTATION_TRACKER, DEFAULT_ENTITY_ROTATION);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ENTITY_ROTATION_TRACKER, DEFAULT_ENTITY_ROTATION);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        float angle = dataTracker.get(ENTITY_ROTATION_TRACKER);
+        float angle = entityData.get(ENTITY_ROTATION_TRACKER);
         if (entityRotation != angle) {
             setEntityRotation(angle);
         }
@@ -122,7 +120,7 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
 
     public void setEntityRotation(float angle) {
         entityRotation = angle;
-        dataTracker.set(ENTITY_ROTATION_TRACKER, angle);
+        entityData.set(ENTITY_ROTATION_TRACKER, angle);
     }
 
     public float getEntityRotation() {
@@ -130,18 +128,18 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    protected float turnHead(float bodyRotation, float headRotation) {
-        prevBodyYaw = prevYaw;
-        bodyYaw = getYaw();
+    protected float tickHeadTurn(float bodyRotation, float headRotation) {
+        yBodyRotO = yRotO;
+        yBodyRot = getYRot();
         return 0.0f;
     }
     
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
 
         if (!displayedItem.isEmpty()) {
-            nbt.put(DISPLAYED_ITEM_NBT_KEY, displayedItem.encodeAllowEmpty(this.getRegistryManager()));
+            nbt.put(DISPLAYED_ITEM_NBT_KEY, displayedItem.saveOptional(this.registryAccess()));
         }
 
         if (entityRotation != DEFAULT_ENTITY_ROTATION) {
@@ -150,12 +148,12 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
 
         if (nbt.contains(DISPLAYED_ITEM_NBT_KEY)) {
-            NbtCompound heldItemNbt = nbt.getCompound(DISPLAYED_ITEM_NBT_KEY);
-            displayedItem = ItemStack.fromNbtOrEmpty(this.getRegistryManager(), heldItemNbt);
+            CompoundTag heldItemNbt = nbt.getCompound(DISPLAYED_ITEM_NBT_KEY);
+            displayedItem = ItemStack.parseOptional(this.registryAccess(), heldItemNbt);
         }
 
         if (nbt.contains(ENTITY_ROTATION_NBT_KEY)) {
@@ -164,48 +162,48 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    public Iterable<ItemStack> getHandItems() {
-        return DefaultedList.ofSize(1, displayedItem);
+    public Iterable<ItemStack> getHandSlots() {
+        return NonNullList.withSize(1, displayedItem);
     }
 
     @Override
-    public Iterable<ItemStack> getArmorItems() {
-        return DefaultedList.of();
+    public Iterable<ItemStack> getArmorSlots() {
+        return NonNullList.create();
     }
 
     @Override
-    public ItemStack getEquippedStack(EquipmentSlot slot) {
+    public ItemStack getItemBySlot(EquipmentSlot slot) {
         return (slot == EquipmentSlot.MAINHAND) ? displayedItem : ItemStack.EMPTY;
     }
 
     @Override
-    public void equipStack(EquipmentSlot slot, ItemStack stack) {
-        processEquippedStack(stack);
+    public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
+        verifyEquippedItem(stack);
 
         if (slot == EquipmentSlot.MAINHAND) {
             ItemStack oldStack = displayedItem;
             displayedItem = stack;
-            onEquipStack(slot, oldStack, stack);
+            onEquipItem(slot, oldStack, stack);
         }
     }
 
     @Override
-    public Arm getMainArm() {
-        return Arm.RIGHT;
+    public HumanoidArm getMainArm() {
+        return HumanoidArm.RIGHT;
     }
 
     @Override
-    public void calculateDimensions() {
+    public void refreshDimensions() {
         double x = getX();
         double y = getY();
         double z = getZ();
 
-        super.calculateDimensions();
-        setPosition(x, y, z);
+        super.refreshDimensions();
+        setPos(x, y, z);
     }
 
     @Override
-    public float getStepHeight() {
+    public float maxUpStep() {
         return 0.0f;
     }
 
@@ -215,28 +213,28 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    protected void pushAway(Entity entity) {
+    protected void doPush(Entity entity) {
     }
 
     @Override
-    protected void tickCramming() {
-        List<Entity> otherEntities = getWorld().getOtherEntities(this, getBoundingBox(), RIDEABLE_MINECART_PREDICATE);
+    protected void pushEntities() {
+        List<Entity> otherEntities = level().getEntities(this, getBoundingBox(), RIDEABLE_MINECART_PREDICATE);
         for (Entity entity : otherEntities) {
-            if (squaredDistanceTo(entity) <= 0.2) {
-                entity.pushAwayFrom(this);
+            if (distanceToSqr(entity) <= 0.2) {
+                entity.push(this);
             }
         }
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
-        if (getWorld().isClient || this.isRemoved()) {
+    public boolean hurt(DamageSource source, float amount) {
+        if (level().isClientSide || this.isRemoved()) {
             return false;
         }
 
-        ServerWorld serverWorld = (ServerWorld) this.getWorld();
+        ServerLevel serverWorld = (ServerLevel) this.level();
 
-        if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             kill();
             return false;
         }
@@ -245,57 +243,57 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
             return false;
         }
 
-        if (source.isIn(DamageTypeTags.IS_EXPLOSION)) {
+        if (source.is(DamageTypeTags.IS_EXPLOSION)) {
             breakAndDropItem(serverWorld, source);
             kill();
             return false;
         }
 
-        if (source.isIn(DamageTypeTags.IGNITES_ARMOR_STANDS)) {
+        if (source.is(DamageTypeTags.IGNITES_ARMOR_STANDS)) {
             if (this.isOnFire()) {
                 updateHealth(serverWorld, source, 0.15f);
             } else {
-                setOnFireFor(5);
+                igniteForSeconds(5);
             }
 
             return false;
         }
 
-        if (source.isIn(DamageTypeTags.BURNS_ARMOR_STANDS) && getHealth() > 0.5f) {
+        if (source.is(DamageTypeTags.BURNS_ARMOR_STANDS) && getHealth() > 0.5f) {
             updateHealth(serverWorld, source, 4.0f);
             return false;
         }
 
-        boolean isProjectile = source.getSource() instanceof PersistentProjectileEntity;
-        boolean hasPiercing = isProjectile && ((PersistentProjectileEntity)source.getSource()).getPierceLevel() > 0;
-        boolean fromPlayer = source.getName().equals("player");
+        boolean isProjectile = source.getDirectEntity() instanceof AbstractArrow;
+        boolean hasPiercing = isProjectile && ((AbstractArrow)source.getDirectEntity()).getPierceLevel() > 0;
+        boolean fromPlayer = source.getMsgId().equals("player");
 
         if (!fromPlayer && !isProjectile) {
             return false;
         }
 
-        Entity attacker = source.getAttacker();
-        if (attacker instanceof PlayerEntity playerEntity) {
-            if (!playerEntity.getAbilities().allowModifyWorld) {
+        Entity attacker = source.getEntity();
+        if (attacker instanceof Player playerEntity) {
+            if (!playerEntity.getAbilities().mayBuild) {
                 return false;
             }
         }
 
-        if (source.isSourceCreativePlayer()) {
+        if (source.isCreativePlayer()) {
             playBreakSound();
             spawnBreakParticles();
             kill();
             return hasPiercing;
         }
 
-        long currTime = getWorld().getTime();
+        long currTime = level().getGameTime();
         if (currTime - lastHitTime <= 5L || isProjectile) {
             breakAndDropItem(serverWorld, source);
             spawnBreakParticles();
             kill();
         } else {
-            getWorld().sendEntityStatus(this, EntityStatuses.HIT_ARMOR_STAND);
-            emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
+            level().broadcastEntityEvent(this, EntityEvent.ARMORSTAND_WOBBLE);
+            gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
             lastHitTime = currTime;
         }
 
@@ -303,20 +301,20 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    public void handleStatus(byte status) {
-        if (status == EntityStatuses.HIT_ARMOR_STAND) {
-            if (getWorld().isClient) {
-                getWorld().playSound(getX(), getY(), getZ(), this.getHitSound(), getSoundCategory(), 0.3f, 1.0f, false);
-                lastHitTime = getWorld().getTime();
+    public void handleEntityEvent(byte status) {
+        if (status == EntityEvent.ARMORSTAND_WOBBLE) {
+            if (level().isClientSide) {
+                level().playLocalSound(getX(), getY(), getZ(), this.getHitSound(), getSoundSource(), 0.3f, 1.0f, false);
+                lastHitTime = level().getGameTime();
             }
         } else {
-            super.handleStatus(status);
+            super.handleEntityEvent(status);
         }
     }
 
     @Override
-    public boolean shouldRender(double distance) {
-        double d = getBoundingBox().getAverageSideLength() * 4.0;
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        double d = getBoundingBox().getSize() * 4.0;
         if (Double.isNaN(d) || d == 0.0) {
             d = 4.0;
         }
@@ -327,30 +325,30 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     @Override
     public void kill() {
         remove(RemovalReason.KILLED);
-        emitGameEvent(GameEvent.ENTITY_DIE);
+        gameEvent(GameEvent.ENTITY_DIE);
     }
 
     @Override
-    public boolean handleAttack(Entity attacker) {
-        return attacker instanceof PlayerEntity && !getWorld().canPlayerModifyAt((PlayerEntity)attacker, getBlockPos());
+    public boolean skipAttackInteraction(Entity attacker) {
+        return attacker instanceof Player && !level().mayInteract((Player)attacker, blockPosition());
     }
 
     @Override
-    public void onStruckByLightning(ServerWorld world, LightningEntity lightning) {
+    public void thunderHit(ServerLevel world, LightningBolt lightning) {
     }
 
     @Override
-    public boolean isAffectedBySplashPotions() {
+    public boolean isAffectedByPotions() {
         return false;
     }
 
     @Override
-    public boolean isMobOrPlayer() {
+    public boolean attackable() {
         return false;
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
+    public ItemStack getPickResult() {
         return new ItemStack(this.getEntityItem());
     }
 }

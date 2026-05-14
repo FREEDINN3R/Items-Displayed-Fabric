@@ -3,9 +3,9 @@ package net.freedinner.items_displayed.util;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.freedinner.items_displayed.config.ModConfigs;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class BlockItemMapper {
     private static BiMap<Block, Item> blockItemMap = HashBiMap.create();
@@ -49,7 +49,7 @@ public class BlockItemMapper {
     }
 
     public static boolean isItemBlacklisted(Item item) {
-        String itemId = Registries.ITEM.getId(item).toString();
+        String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
         return ModConfigs.BLACKLISTED_ITEMS.contains(itemId);
     }
 }

@@ -3,24 +3,28 @@ package net.freedinner.items_displayed.item.custom;
 import net.freedinner.items_displayed.config.ModConfigs;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.entity.custom.jewelry_pillow.JewelryPillowEntity;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.*;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -28,47 +32,47 @@ import java.util.function.Consumer;
 public class JewelryPillowItem extends Item {
     private final DyeColor color;
 
-    public JewelryPillowItem(Settings settings, DyeColor color) {
+    public JewelryPillowItem(Properties settings, DyeColor color) {
         super(settings);
         this.color = color;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        super.appendTooltip(stack, context, tooltip, type);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag type) {
+        super.appendHoverText(stack, context, tooltip, type);
 
         if (!ModConfigs.APPEND_EXTRA_TOOLTIPS) {
             return;
         }
 
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("item.items_displayed.tooltip.can_be_used_to").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("item.items_displayed.tooltip.jewelry_pillow_0").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("item.items_displayed.tooltip.jewelry_pillow_1").formatted(Formatting.GRAY));
+            tooltip.add(Component.translatable("item.items_displayed.tooltip.can_be_used_to").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.items_displayed.tooltip.jewelry_pillow_0").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.items_displayed.tooltip.jewelry_pillow_1").withStyle(ChatFormatting.GRAY));
         }
         else {
-            tooltip.add(Text.translatable("item.items_displayed.tooltip.shift_more_info").formatted(Formatting.GRAY));
+            tooltip.add(Component.translatable("item.items_displayed.tooltip.shift_more_info").withStyle(ChatFormatting.GRAY));
         }
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getSide() == Direction.DOWN) {
-            return ActionResult.FAIL;
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getClickedFace() == Direction.DOWN) {
+            return InteractionResult.FAIL;
         }
 
-        World world = context.getWorld();
-        BlockPos blockPos = context.getBlockPos().offset(context.getSide());
+        Level world = context.getLevel();
+        BlockPos blockPos = context.getClickedPos().relative(context.getClickedFace());
 
         if (!enoughSpaceAt(blockPos, world)) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
-        if (world instanceof ServerWorld serverWorld) {
+        if (world instanceof ServerLevel serverWorld) {
             JewelryPillowEntity jewelryPillowEntity = createJewelryPillow(serverWorld, context, blockPos);
 
             if (jewelryPillowEntity == null) {
-                return ActionResult.FAIL;
+                return InteractionResult.FAIL;
             }
 
             setJewelryPillowRotation(jewelryPillowEntity, context);
@@ -76,33 +80,33 @@ public class JewelryPillowItem extends Item {
             summonJewelryPillow(serverWorld, jewelryPillowEntity, context.getPlayer());
         }
 
-        context.getStack().decrement(1);
-        return ActionResult.success(world.isClient);
+        context.getItemInHand().shrink(1);
+        return InteractionResult.sidedSuccess(world.isClientSide);
     }
 
-    private boolean enoughSpaceAt(BlockPos blockPos, World world) {
-        Vec3d vec3d = Vec3d.ofBottomCenter(blockPos);
-        Box box = ModEntities.JEWELRY_PILLOW.getDimensions().getBoxAt(vec3d.getX(), vec3d.getY(), vec3d.getZ());
+    private boolean enoughSpaceAt(BlockPos blockPos, Level world) {
+        Vec3 vec3d = Vec3.atBottomCenterOf(blockPos);
+        AABB box = ModEntities.JEWELRY_PILLOW.getDimensions().makeBoundingBox(vec3d.x(), vec3d.y(), vec3d.z());
 
-        return world.isSpaceEmpty(box) && world.getOtherEntities(null, box).isEmpty();
+        return world.noCollision(box) && world.getEntities(null, box).isEmpty();
     }
 
-    private JewelryPillowEntity createJewelryPillow(ServerWorld serverWorld, ItemUsageContext context, BlockPos blockPos) {
-        Consumer<JewelryPillowEntity> consumer = EntityType.copier(serverWorld, context.getStack(), context.getPlayer());
-        return ModEntities.JEWELRY_PILLOW.create(serverWorld, consumer, blockPos, SpawnReason.SPAWN_EGG, true, false);
+    private JewelryPillowEntity createJewelryPillow(ServerLevel serverWorld, UseOnContext context, BlockPos blockPos) {
+        Consumer<JewelryPillowEntity> consumer = EntityType.createDefaultStackConfig(serverWorld, context.getItemInHand(), context.getPlayer());
+        return ModEntities.JEWELRY_PILLOW.create(serverWorld, consumer, blockPos, MobSpawnType.SPAWN_EGG, true, false);
     }
 
-    private void setJewelryPillowRotation(JewelryPillowEntity entity, ItemUsageContext context) {
-        float angle = MathHelper.wrapDegrees(context.getPlayerYaw() - 180.0f);
+    private void setJewelryPillowRotation(JewelryPillowEntity entity, UseOnContext context) {
+        float angle = Mth.wrapDegrees(context.getRotation() - 180.0f);
         float minRotation = ModConfigs.ENTITY_ROTATION_ANGLE;
-        angle = MathHelper.floor((angle + minRotation / 2.0) / minRotation) * minRotation;
+        angle = Mth.floor((angle + minRotation / 2.0) / minRotation) * minRotation;
 
         entity.setEntityRotation(angle);
     }
 
-    private void summonJewelryPillow(ServerWorld serverWorld, JewelryPillowEntity entity, PlayerEntity player) {
-        serverWorld.spawnEntityAndPassengers(entity);
-        serverWorld.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLOCK_WOOL_PLACE, SoundCategory.BLOCKS, 0.75f, 0.8f);
-        entity.emitGameEvent(GameEvent.ENTITY_PLACE, player);
+    private void summonJewelryPillow(ServerLevel serverWorld, JewelryPillowEntity entity, Player player) {
+        serverWorld.addFreshEntityWithPassengers(entity);
+        serverWorld.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 0.75f, 0.8f);
+        entity.gameEvent(GameEvent.ENTITY_PLACE, player);
     }
 }

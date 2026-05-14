@@ -6,63 +6,63 @@ import net.freedinner.items_displayed.block.custom.NetheriteUpgradeBlock;
 import net.freedinner.items_displayed.block.custom.SherdBlock;
 import net.freedinner.items_displayed.block.custom.stackable.DiscFragmentItemBlock;
 import net.freedinner.items_displayed.block.custom.stackable.IngotItemBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 public class ModTemplates {
     public static Block defaultSherdBlock() {
         return new SherdBlock(defaultSettings()
                 .mapColor(MapColor.TERRACOTTA_RED)
-                .sounds(BlockSoundGroup.DECORATED_POT));
+                .sound(SoundType.DECORATED_POT));
     }
 
     public static Block defaultUpgradeBlock() {
         return new NetheriteUpgradeBlock(defaultSettings()
-                .mapColor(MapColor.DARK_RED)
-                .sounds(BlockSoundGroup.NETHERRACK));
+                .mapColor(MapColor.NETHER)
+                .sound(SoundType.NETHERRACK));
     }
 
-    public static Block defaultArmorTrimBlock(BlockSoundGroup soundGroup) {
+    public static Block defaultArmorTrimBlock(SoundType soundGroup) {
         return new ArmorTrimBlock(defaultSettings()
-                .mapColor(MapColor.STONE_GRAY)
-                .sounds(soundGroup));
+                .mapColor(MapColor.STONE)
+                .sound(soundGroup));
     }
 
     public static Block defaultIngotBlock(MapColor mapColor, boolean metal) {
-        BlockSoundGroup soundGroup = metal ? BlockSoundGroup.NETHERITE : BlockSoundGroup.STONE;
+        SoundType soundGroup = metal ? SoundType.NETHERITE_BLOCK : SoundType.STONE;
 
         return new IngotItemBlock(defaultSettings()
                 .mapColor(mapColor)
-                .sounds(soundGroup));
+                .sound(soundGroup));
     }
 
-    public static Block defaultDiscBlock(BlockSoundGroup soundGroup) {
+    public static Block defaultDiscBlock(SoundType soundGroup) {
         return new MusicDiskBlock(defaultSettings()
-                .mapColor(MapColor.BLACK)
-                .sounds(soundGroup));
+                .mapColor(MapColor.COLOR_BLACK)
+                .sound(soundGroup));
     }
 
     public static Block defaultDiscFragmentBlock() {
         return new DiscFragmentItemBlock(defaultSettings()
-                .mapColor(MapColor.BLACK)
-                .sounds(BlockSoundGroup.BAMBOO_WOOD));
+                .mapColor(MapColor.COLOR_BLACK)
+                .sound(SoundType.BAMBOO_WOOD));
     }
 
-    public static AbstractBlock.Settings defaultGemstoneSettings(MapColor mapColor) {
+    public static BlockBehaviour.Properties defaultGemstoneSettings(MapColor mapColor) {
         return defaultSettings()
                 .mapColor(mapColor)
-                .sounds(BlockSoundGroup.METAL);
+                .sound(SoundType.METAL);
     }
 
-    private static AbstractBlock.Settings defaultSettings() {
-        return AbstractBlock.Settings
-                .create()
-                .breakInstantly()
-                .noBlockBreakParticles()
-                .nonOpaque()
-                .pistonBehavior(PistonBehavior.DESTROY);
+    private static BlockBehaviour.Properties defaultSettings() {
+        return BlockBehaviour.Properties
+                .of()
+                .instabreak()
+                .noTerrainParticles()
+                .noOcclusion()
+                .pushReaction(PushReaction.DESTROY);
     }
 }
