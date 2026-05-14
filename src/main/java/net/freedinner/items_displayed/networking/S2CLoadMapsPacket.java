@@ -65,10 +65,10 @@ public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements Cust
 
             for (int i = 0; i < size; i++) {
                 ResourceLocation blockId = packet.readResourceLocation();
-                Block block = BuiltInRegistries.BLOCK.get(blockId);
+                Block block = BuiltInRegistries.BLOCK.getValue(blockId);
 
                 ResourceLocation itemId = packet.readResourceLocation();
-                Item item = BuiltInRegistries.ITEM.get(itemId);
+                Item item = BuiltInRegistries.ITEM.getValue(itemId);
 
                 map.put(block, item);
             }

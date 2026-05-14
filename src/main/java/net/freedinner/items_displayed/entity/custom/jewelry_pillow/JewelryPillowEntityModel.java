@@ -2,22 +2,24 @@ package net.freedinner.items_displayed.entity.custom.jewelry_pillow;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class JewelryPillowEntityModel extends HierarchicalModel<JewelryPillowEntity> implements ArmedModel {
-	private final ModelPart root;
+public class JewelryPillowEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel {
+    private final ModelPart root;
 
-	public JewelryPillowEntityModel(ModelPart root) {
-		this.root = root;
-	}
+    public JewelryPillowEntityModel(ModelPart root) {
+        super(root);
+        this.root=root;
+    }
 
-	public static LayerDefinition getTexturedModelData() {
-		MeshDefinition modelData = new MeshDefinition();
-		PartDefinition modelPartData = modelData.getRoot();
+    public static LayerDefinition getTexturedModelData() {
+        MeshDefinition modelData=new MeshDefinition();
+        PartDefinition modelPartData=modelData.getRoot();
 
 		PartDefinition main = modelPartData.addOrReplaceChild("main", CubeListBuilder.create().texOffs(0, 13).addBox(-4.0F, -1.001F, 2.75F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 		main.addOrReplaceChild("support1", CubeListBuilder.create().texOffs(4, 13).addBox(-2.999F, -1.0F, -1.001F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.5F, -3.0F, 3.75F, 1.5708F, 0.0F, -1.5708F));
@@ -29,16 +31,11 @@ public class JewelryPillowEntityModel extends HierarchicalModel<JewelryPillowEnt
 		return LayerDefinition.create(modelData, 64, 64);
 	}
 
-	@Override
-	public ModelPart root() {
-		return root;
-	}
+    @Override
+    public void setupAnim(LivingEntityRenderState state) {
+    }
 
-	@Override
-	public void setupAnim(JewelryPillowEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-	}
-
-	@Override
-	public void translateToHand(HumanoidArm arm, PoseStack matrices) {
-	}
+    @Override
+    public void translateToHand(HumanoidArm arm, PoseStack matrices) {
+    }
 }

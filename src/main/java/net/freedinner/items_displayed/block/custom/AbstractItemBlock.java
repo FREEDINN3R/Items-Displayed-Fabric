@@ -3,13 +3,14 @@ package net.freedinner.items_displayed.block.custom;
 import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -20,8 +21,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractItemBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -48,11 +51,11 @@ public abstract class AbstractItemBlock extends HorizontalDirectionalBlock imple
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        super.neighborChanged(state, world, pos, sourceBlock, sourcePos, notify);
+    protected void neighborChanged(BlockState state, Level level, BlockPos blockPos, Block block, @Nullable Orientation orientation, boolean bl) {
+        super.neighborChanged(state, level, blockPos, block, orientation, bl);
 
-        if(!world.isClientSide && !canSurvive(state, world, pos)) {
-            world.destroyBlock(pos, true);
+        if(!level.isClientSide() && !canSurvive(state, level, blockPos)) {
+            level.destroyBlock(blockPos, true);
         }
     }
 
@@ -62,12 +65,11 @@ public abstract class AbstractItemBlock extends HorizontalDirectionalBlock imple
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
-        if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+    protected BlockState updateShape(BlockState state,LevelReader levelReader,ScheduledTickAccess scheduledTickAccess,BlockPos pos,Direction direction,BlockPos neighborPos,BlockState neighborState,RandomSource randomSource){
+        if(state.getValue(WATERLOGGED)){
+            scheduledTickAccess.scheduleTick(pos,Fluids.WATER,Fluids.WATER.getTickDelay(levelReader));
         }
-
-        return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
+        return super.updateShape(state,levelReader,scheduledTickAccess,pos,direction,neighborPos,neighborState,randomSource);
     }
 
     @Override
