@@ -1,7 +1,7 @@
 package net.freedinner.items_displayed.config;
 
 import net.freedinner.items_displayed.ItemsDisplayed;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
 
@@ -63,7 +63,7 @@ public class ModConfigs {
     private static void assignConfigs() {
         APPEND_ITEM_TOOLTIPS = CONFIG.getOrDefault(APPEND_ITEM_TOOLTIPS_KEY, APPEND_ITEM_TOOLTIPS_DEFAULT);
         APPEND_EXTRA_TOOLTIPS = CONFIG.getOrDefault(APPEND_EXTRA_TOOLTIPS_KEY, APPEND_EXTRA_TOOLTIPS_DEFAULT);
-        ENTITY_ROTATION_ANGLE = MathHelper.clamp(
+        ENTITY_ROTATION_ANGLE = Mth.clamp(
                 CONFIG.getOrDefault(ENTITY_ROTATION_ANGLE_KEY, ENTITY_ROTATION_ANGLE_DEFAULT), 1, 90
         );
         BLACKLISTED_ITEMS = configArrayToList(

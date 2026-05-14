@@ -6,69 +6,69 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.util.BlockItemMapper;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
-public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements CustomPayload {
-    public static final CustomPayload.Id<S2CLoadMapsPacket> ID = new CustomPayload.Id<>(ItemsDisplayed.id("client_load_maps"));
-    public static final PacketCodec<RegistryByteBuf, S2CLoadMapsPacket> CODEC = CustomPayload.codecOf(
+public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<S2CLoadMapsPacket> ID = new CustomPacketPayload.Type<>(ItemsDisplayed.id("client_load_maps"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, S2CLoadMapsPacket> CODEC = CustomPacketPayload.codec(
             S2CLoadMapsPacket::write,
             S2CLoadMapsPacket::new
     );
 
-    public S2CLoadMapsPacket(RegistryByteBuf buf){
+    public S2CLoadMapsPacket(RegistryFriendlyByteBuf buf){
         this(MapWriter.readMapFromPacket(buf));
     }
 
-    public void write(RegistryByteBuf buf){
+    public void write(RegistryFriendlyByteBuf buf){
         MapWriter.writeMapToPacket(blockItemMap, buf);
     }
 
-    public static void send(ServerPlayerEntity player, BiMap<Block, Item> blockItemMap) {
+    public static void send(ServerPlayer player, BiMap<Block, Item> blockItemMap) {
         ServerPlayNetworking.send(player, new S2CLoadMapsPacket(blockItemMap));
     }
 
     public static void receive(S2CLoadMapsPacket packet, ClientPlayNetworking.Context context) {
-        context.client().executeTask(() -> {
+        context.client().doRunTask(() -> {
             BlockItemMapper.setBlockItemMap(packet.blockItemMap);
         });
     }
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 
     public static class MapWriter {
-        public static void writeMapToPacket(BiMap<Block, Item> map, PacketByteBuf packet) {
+        public static void writeMapToPacket(BiMap<Block, Item> map, FriendlyByteBuf packet) {
             packet.writeInt(map.size());
 
             map.forEach((key, value) -> {
-                Identifier blockId = Registries.BLOCK.getId(key);
-                packet.writeIdentifier(blockId);
+                ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(key);
+                packet.writeResourceLocation(blockId);
 
-                Identifier itemId = Registries.ITEM.getId(value);
-                packet.writeIdentifier(itemId);
+                ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(value);
+                packet.writeResourceLocation(itemId);
             });
         }
 
-        public static BiMap<Block, Item> readMapFromPacket(PacketByteBuf packet) {
+        public static BiMap<Block, Item> readMapFromPacket(FriendlyByteBuf packet) {
             BiMap<Block, Item> map = HashBiMap.create();
             int size = packet.readInt();
 
             for (int i = 0; i < size; i++) {
-                Identifier blockId = packet.readIdentifier();
-                Block block = Registries.BLOCK.get(blockId);
+                ResourceLocation blockId = packet.readResourceLocation();
+                Block block = BuiltInRegistries.BLOCK.get(blockId);
 
-                Identifier itemId = packet.readIdentifier();
-                Item item = Registries.ITEM.get(itemId);
+                ResourceLocation itemId = packet.readResourceLocation();
+                Item item = BuiltInRegistries.ITEM.get(itemId);
 
                 map.put(block, item);
             }

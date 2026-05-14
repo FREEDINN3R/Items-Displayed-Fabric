@@ -1,32 +1,32 @@
 package net.freedinner.items_displayed.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class BlockPlacer {
-    public static ActionResult place(Block block, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
-        if (player.getWorld().isClient() || !player.getAbilities().allowModifyWorld) {
-            return ActionResult.PASS;
+    public static InteractionResult place(Block block, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (player.level().isClientSide() || !player.getAbilities().mayBuild) {
+            return InteractionResult.PASS;
         }
 
         BlockItem blockItem = (BlockItem) block.asItem();
-        ItemPlacementContext placementContext = new ItemPlacementContext(player, hand, player.getStackInHand(hand), hitResult);
+        BlockPlaceContext placementContext = new BlockPlaceContext(player, hand, player.getItemInHand(hand), hitResult);
 
-        ActionResult result = blockItem.place(placementContext);
+        InteractionResult result = blockItem.place(placementContext);
 
-        if (result.isAccepted()) {
-            player.swingHand(hand, true);
+        if (result.consumesAction()) {
+            player.swing(hand, true);
 
-            SoundEvent sound = block.getDefaultState().getSoundGroup().getPlaceSound();
-            float pitch = player.getWorld().getRandom().nextFloat() * 0.1f + 0.9f;
-            player.getWorld().playSound(null, placementContext.getBlockPos(), sound, SoundCategory.BLOCKS, 1.0f, pitch);
+            SoundEvent sound = block.defaultBlockState().getSoundType().getPlaceSound();
+            float pitch = player.level().getRandom().nextFloat() * 0.1f + 0.9f;
+            player.level().playSound(null, placementContext.getClickedPos(), sound, SoundSource.BLOCKS, 1.0f, pitch);
         }
 
         return result;

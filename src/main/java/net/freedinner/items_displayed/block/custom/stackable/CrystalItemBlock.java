@@ -3,54 +3,54 @@ package net.freedinner.items_displayed.block.custom.stackable;
 import com.mojang.serialization.MapCodec;
 import net.freedinner.items_displayed.block.custom.AbstractItemBlock;
 import net.freedinner.items_displayed.util.ModProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CrystalItemBlock extends AbstractStackableItemBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE_1 =
-            Block.createCuboidShape(5.0, 0.0, 4.0, 11.0, 3.0, 12.0);
+            Block.box(5.0, 0.0, 4.0, 11.0, 3.0, 12.0);
     public static final VoxelShape EAST_WEST_SHAPE_1 =
-            Block.createCuboidShape(4.0, 0.0, 5.0, 12.0, 3.0, 11.0);
+            Block.box(4.0, 0.0, 5.0, 12.0, 3.0, 11.0);
     public static final VoxelShape NORTH_SOUTH_SHAPE_2 =
-            Block.createCuboidShape(3.0, 0.0, 1.5, 13.0, 3.0, 14.5);
+            Block.box(3.0, 0.0, 1.5, 13.0, 3.0, 14.5);
     public static final VoxelShape EAST_WEST_SHAPE_2 =
-            Block.createCuboidShape(1.5, 0.0, 3.0, 14.5, 3.0, 13.0);
+            Block.box(1.5, 0.0, 3.0, 14.5, 3.0, 13.0);
     public static final VoxelShape NORTH_SOUTH_SHAPE_3 =
-            Block.createCuboidShape(3.0, 0.0, 1.5, 13.0, 6.0, 14.5);
+            Block.box(3.0, 0.0, 1.5, 13.0, 6.0, 14.5);
     public static final VoxelShape EAST_WEST_SHAPE_3 =
-            Block.createCuboidShape(1.5, 0.0, 3.0, 14.5, 6.0, 13.0);
+            Block.box(1.5, 0.0, 3.0, 14.5, 6.0, 13.0);
     public static final VoxelShape NORTH_SOUTH_SHAPE_4 =
-            Block.createCuboidShape(3.0, 0.0, 1.5, 13.0, 6.0, 14.5);
+            Block.box(3.0, 0.0, 1.5, 13.0, 6.0, 14.5);
     public static final VoxelShape EAST_WEST_SHAPE_4 =
-            Block.createCuboidShape(1.5, 0.0, 3.0, 14.5, 6.0, 13.0);
+            Block.box(1.5, 0.0, 3.0, 14.5, 6.0, 13.0);
 
-    private static final MapCodec<? extends HorizontalFacingBlock> CODEC = AbstractItemBlock.createCodec(CrystalItemBlock::new);
+    private static final MapCodec<? extends HorizontalDirectionalBlock> CODEC = AbstractItemBlock.simpleCodec(CrystalItemBlock::new);
 
-    public CrystalItemBlock(Settings settings) {
+    public CrystalItemBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return CODEC;
     }
 
     @Override
-    protected IntProperty getItemProperty() {
+    protected IntegerProperty getItemProperty() {
         return ModProperties.GEMSTONES;
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        int currItemCount = state.get(getItemProperty());
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        int currItemCount = state.getValue(getItemProperty());
 
-        return switch (state.get(FACING)) {
+        return switch (state.getValue(FACING)) {
             case NORTH, SOUTH -> switch (currItemCount) {
                 case 1 -> NORTH_SOUTH_SHAPE_1;
                 case 2 -> NORTH_SOUTH_SHAPE_2;
@@ -65,7 +65,7 @@ public class CrystalItemBlock extends AbstractStackableItemBlock {
                 case 4 -> EAST_WEST_SHAPE_4;
                 default -> throw new IllegalStateException("Unexpected value: " + currItemCount);
             };
-            default -> throw new IllegalStateException("Unexpected value: " + state.get(FACING));
+            default -> throw new IllegalStateException("Unexpected value: " + state.getValue(FACING));
         };
     }
 }

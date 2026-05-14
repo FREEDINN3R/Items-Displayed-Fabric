@@ -11,14 +11,14 @@ import net.freedinner.items_displayed.entity.custom.jewelry_pillow.JewelryPillow
 import net.freedinner.items_displayed.entity.custom.jewelry_pillow.JewelryPillowEntityRenderer;
 import net.freedinner.items_displayed.event.ModEventHandlers;
 import net.freedinner.items_displayed.networking.S2CLoadMapsPacket;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 
 public class ItemsDisplayedClient implements ClientModInitializer {
-	public static final EntityModelLayer ITEM_DISPLAY_MODEL_LAYER = new EntityModelLayer(
+	public static final ModelLayerLocation ITEM_DISPLAY_MODEL_LAYER = new ModelLayerLocation(
 			ItemsDisplayed.id("item_display"),
 			"item_display_model_layer"
 	);
-	public static final EntityModelLayer JEWELRY_PILLOW_MODEL_LAYER = new EntityModelLayer(
+	public static final ModelLayerLocation JEWELRY_PILLOW_MODEL_LAYER = new ModelLayerLocation(
 			ItemsDisplayed.id("jewelry_pillow"),
 			"main"
 	);

@@ -3,77 +3,76 @@ package net.freedinner.items_displayed.block.custom.stackable;
 import net.freedinner.items_displayed.block.custom.AbstractItemBlock;
 import net.freedinner.items_displayed.util.BlockItemMapper;
 import net.freedinner.items_displayed.util.BlockPlacer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CandleBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class AbstractStackableItemBlock extends AbstractItemBlock {
-    public AbstractStackableItemBlock(Settings settings) {
+    public AbstractStackableItemBlock(Properties settings) {
         super(settings);
-        setDefaultState(getDefaultState()
-                .with(getItemProperty(), 1));
+        registerDefaultState(defaultBlockState()
+                .setValue(getItemProperty(), 1));
     }
     
-    protected abstract IntProperty getItemProperty();
+    protected abstract IntegerProperty getItemProperty();
 
     private int getMaxItemCount() {
-        return getItemProperty().getValues().size();
+        return getItemProperty().getPossibleValues().size();
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!player.shouldCancelInteraction() && shouldAddItem(player.getStackInHand(hand), state)) {
-            ActionResult result = BlockPlacer.place(state.getBlock(), player, hand, hit);
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!player.isSecondaryUseActive() && shouldAddItem(player.getItemInHand(hand), state)) {
+            InteractionResult result = BlockPlacer.place(state.getBlock(), player, hand, hit);
 
-            if (result.isAccepted()) {
-                return ItemActionResult.CONSUME;
+            if (result.consumesAction()) {
+                return ItemInteractionResult.CONSUME;
             }
             else {
-                return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
         }
 
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        return super.useItemOn(stack, state, world, pos, player, hand, hit);
     }
 
     @Override
-    public boolean canReplace(BlockState state, ItemPlacementContext context) {
-        if (!context.shouldCancelInteraction() && shouldAddItem(context.getStack(), state)) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+        if (!context.isSecondaryUseActive() && shouldAddItem(context.getItemInHand(), state)) {
             return true;
         }
 
-        return super.canReplace(state, context);
+        return super.canBeReplaced(state, context);
     }
 
     private boolean shouldAddItem(ItemStack heldItemStack, BlockState state) {
-        boolean sameItem = heldItemStack.isOf(BlockItemMapper.getItemOrNull(state.getBlock()));
-        return sameItem && state.get(getItemProperty()) < getMaxItemCount();
+        boolean sameItem = heldItemStack.is(BlockItemMapper.getItemOrNull(state.getBlock()));
+        return sameItem && state.getValue(getItemProperty()) < getMaxItemCount();
     }
 
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockState blockState = ctx.getWorld().getBlockState(ctx.getBlockPos());
-        if (blockState.isOf(this)) {
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        BlockState blockState = ctx.getLevel().getBlockState(ctx.getClickedPos());
+        if (blockState.is(this)) {
             return blockState.cycle(getItemProperty());
         }
 
-        return super.getPlacementState(ctx);
+        return super.getStateForPlacement(ctx);
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(getItemProperty());
     }
 }

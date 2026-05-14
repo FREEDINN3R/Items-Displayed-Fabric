@@ -4,27 +4,27 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.entity.custom.item_display.ItemDisplayEntity;
 import net.freedinner.items_displayed.entity.custom.jewelry_pillow.JewelryPillowEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class ModEntities {
     public static final EntityType<ItemDisplayEntity> ITEM_DISPLAY = Registry.register(
-            Registries.ENTITY_TYPE,
+            BuiltInRegistries.ENTITY_TYPE,
             ItemsDisplayed.id( "item_display"),
             EntityType.Builder
-                    .create(ItemDisplayEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.7f, 0.7f)
+                    .of(ItemDisplayEntity::new, MobCategory.MISC)
+                    .sized(0.7f, 0.7f)
                     .build()
     );
 
     public static final EntityType<JewelryPillowEntity> JEWELRY_PILLOW = Registry.register(
-            Registries.ENTITY_TYPE,
+            BuiltInRegistries.ENTITY_TYPE,
             ItemsDisplayed.id( "jewelry_pillow"),
             EntityType.Builder
-                    .create(JewelryPillowEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.75f, 0.4f)
+                    .of(JewelryPillowEntity::new, MobCategory.MISC)
+                    .sized(0.75f, 0.4f)
                     .build()
     );
 
