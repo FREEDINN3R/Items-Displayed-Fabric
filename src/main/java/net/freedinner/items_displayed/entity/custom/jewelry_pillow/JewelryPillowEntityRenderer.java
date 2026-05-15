@@ -9,31 +9,44 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class JewelryPillowEntityRenderer extends LivingEntityRenderer<JewelryPillowEntity, JewelryPillowEntityModel> {
+public class JewelryPillowEntityRenderer extends LivingEntityRenderer<JewelryPillowEntity, JewelryPillowEntityRenderState, JewelryPillowEntityModel> {
 
     public JewelryPillowEntityRenderer(EntityRendererProvider.Context context) {
-        super(context, new JewelryPillowEntityModel(context.bakeLayer(ItemsDisplayedClient.JEWELRY_PILLOW_MODEL_LAYER)), 0.0f);
-        addLayer(new JewelryPillowItemRenderer(this, context.getItemInHandRenderer()));
+        super(context,new JewelryPillowEntityModel(context.bakeLayer(ItemsDisplayedClient.JEWELRY_PILLOW_MODEL_LAYER)),0.0f);
+        addLayer(new JewelryPillowItemRenderer(this,context.getEntityRenderDispatcher().getItemInHandRenderer()));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(JewelryPillowEntity entity) {
-        String color = entity.getColor().getName();
-        return ItemsDisplayed.id( "textures/entity/jewelry_pillow/" + color + "_jewelry_pillow.png");
+    public JewelryPillowEntityRenderState createRenderState() {
+        return new JewelryPillowEntityRenderState();
     }
 
     @Override
-    protected void setupRotations(JewelryPillowEntity entity, PoseStack matrices, float animationProgress, float bodyYaw, float tickDelta, float scale) {
-        matrices.mulPose(Axis.YP.rotationDegrees(180.0f - entity.getEntityRotation()));
+    public void extractRenderState(JewelryPillowEntity entity, JewelryPillowEntityRenderState state, float partialTick) {
+        super.extractRenderState(entity,state,partialTick);
+        state.entity=entity;
+        state.stack=entity.getMainHandItem();
+        state.color=entity.getColor();
+        state.entityRotation=entity.getEntityRotation();
+        state.hitTicks=(float)(entity.level().getGameTime()-entity.lastHitTime)+partialTick;
+    }
 
-        float i = (float)(entity.level().getGameTime() - entity.lastHitTime) + tickDelta;
-        if (i < 5.0f) {
-            matrices.mulPose(Axis.YP.rotationDegrees(Mth.sin(i / 1.5f * (float)Math.PI) * 3.0f));
+    @Override
+    public ResourceLocation getTextureLocation(JewelryPillowEntityRenderState state) {
+        return ItemsDisplayed.id("textures/entity/jewelry_pillow/"+state.color.getName()+"_jewelry_pillow.png");
+    }
+
+    @Override
+    protected void setupRotations(JewelryPillowEntityRenderState state, PoseStack matrices, float bodyYaw, float scale) {
+        matrices.mulPose(Axis.YP.rotationDegrees(180.0f-state.entityRotation));
+
+        if(state.hitTicks<5.0f){
+            matrices.mulPose(Axis.YP.rotationDegrees(Mth.sin(state.hitTicks/1.5f*(float)Math.PI)*3.0f));
         }
     }
 
     @Override
-    protected boolean shouldShowName(JewelryPillowEntity livingEntity) {
+    protected boolean shouldShowName(JewelryPillowEntity entity,double distance) {
         return false;
     }
 }
