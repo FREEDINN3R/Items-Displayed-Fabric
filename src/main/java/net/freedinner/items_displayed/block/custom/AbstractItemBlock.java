@@ -45,8 +45,8 @@ public abstract class AbstractItemBlock extends HorizontalDirectionalBlock imple
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state) {
-        Item item = BlockItemMapper.getItemOrNull(state.getBlock(), true);
+    protected ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean bl) {
+        Item item = BlockItemMapper.getItemOrNull(blockState.getBlock(), true);
         return new ItemStack((item == null) ? Blocks.AIR : item);
     }
 
