@@ -6,8 +6,8 @@ import net.freedinner.items_displayed.item.custom.ItemDisplayItem;
 import net.freedinner.items_displayed.item.custom.JewelryPillowItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 
