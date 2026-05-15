@@ -2,8 +2,8 @@ package net.freedinner.items_displayed;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.entity.custom.item_display.ItemDisplayEntityModel;
 import net.freedinner.items_displayed.entity.custom.item_display.ItemDisplayEntityRenderer;
@@ -26,9 +26,9 @@ public class ItemsDisplayedClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		EntityRendererRegistry.register(ModEntities.ITEM_DISPLAY, ItemDisplayEntityRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(ITEM_DISPLAY_MODEL_LAYER, ItemDisplayEntityModel::getTexturedModelData);
+		ModelLayerRegistry.registerModelLayer(ITEM_DISPLAY_MODEL_LAYER, ItemDisplayEntityModel::getTexturedModelData);
 		EntityRendererRegistry.register(ModEntities.JEWELRY_PILLOW, JewelryPillowEntityRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(JEWELRY_PILLOW_MODEL_LAYER, JewelryPillowEntityModel::getTexturedModelData);
+		ModelLayerRegistry.registerModelLayer(JEWELRY_PILLOW_MODEL_LAYER, JewelryPillowEntityModel::getTexturedModelData);
 
 		ModEventHandlers.registerClientEventHandlers();
 		ClientPlayNetworking.registerGlobalReceiver(S2CLoadMapsPacket.ID, S2CLoadMapsPacket::receive);

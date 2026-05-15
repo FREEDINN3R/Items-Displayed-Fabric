@@ -1,6 +1,6 @@
 package net.freedinner.items_displayed.item;
 
-import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
+import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.item.custom.ItemDisplayItem;
 import net.freedinner.items_displayed.item.custom.JewelryPillowItem;
@@ -72,6 +72,6 @@ public class ModItems {
     public static void registerItems(){
         ItemsDisplayed.LOGGER.info("Registering items");
 
-        FuelRegistryEvents.BUILD.register((builder, context)-> builder.add(ITEM_DISPLAY,250));
+        FuelValueEvents.BUILD.register((builder, context)-> builder.add(ITEM_DISPLAY,250));
     }
 }

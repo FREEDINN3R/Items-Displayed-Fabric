@@ -34,6 +34,6 @@ public class ItemsDisplayed implements ModInitializer {
 		ModEntities.registerEntities();
 
 		ModEventHandlers.registerServerEventHandlers();
-		PayloadTypeRegistry.playS2C().register(S2CLoadMapsPacket.ID, S2CLoadMapsPacket.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(S2CLoadMapsPacket.ID, S2CLoadMapsPacket.CODEC);
 	}
 }

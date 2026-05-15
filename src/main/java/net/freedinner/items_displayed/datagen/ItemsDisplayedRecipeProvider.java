@@ -1,6 +1,6 @@
 package net.freedinner.items_displayed.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.freedinner.items_displayed.item.ModItems;
 import net.minecraft.core.HolderGetter;
@@ -17,7 +17,8 @@ import net.minecraft.world.level.ItemLike;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemsDisplayedRecipeProvider extends FabricRecipeProvider {
-    public ItemsDisplayedRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+
+    public ItemsDisplayedRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

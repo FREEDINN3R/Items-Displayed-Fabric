@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemDisplayEntity extends AbstractDisplayEntity {
@@ -25,8 +26,9 @@ public class ItemDisplayEntity extends AbstractDisplayEntity {
         super(entityType, world);
     }
 
+
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand,Vec3 location) {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (player.isSpectator()) {

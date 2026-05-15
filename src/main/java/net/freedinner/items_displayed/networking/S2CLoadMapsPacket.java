@@ -36,9 +36,7 @@ public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements Cust
     }
 
     public static void receive(S2CLoadMapsPacket packet, ClientPlayNetworking.Context context) {
-        context.client().doRunTask(() -> {
-            BlockItemMapper.setBlockItemMap(packet.blockItemMap);
-        });
+        context.client().execute(() -> BlockItemMapper.setBlockItemMap(packet.blockItemMap));
     }
 
     @Override
