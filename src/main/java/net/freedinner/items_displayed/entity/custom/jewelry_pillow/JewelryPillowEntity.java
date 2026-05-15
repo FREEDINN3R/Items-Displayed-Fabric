@@ -25,6 +25,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class JewelryPillowEntity extends AbstractDisplayEntity {
@@ -108,19 +110,16 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
+    public void addAdditionalSaveData(ValueOutput nbt) {
         super.addAdditionalSaveData(nbt);
-
-        nbt.putByte(PILLOW_COLOR_NBT_KEY, (byte) this.getColor().getId());
+        nbt.putByte(PILLOW_COLOR_NBT_KEY, (byte)this.getColor().getId());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
+    public void readAdditionalSaveData(ValueInput nbt) {
         super.readAdditionalSaveData(nbt);
 
-        nbt.getByte(PILLOW_COLOR_NBT_KEY).ifPresent(color ->
-                this.setColor(DyeColor.byId(color))
-        );
+        this.setColor(DyeColor.byId(nbt.getByteOr(PILLOW_COLOR_NBT_KEY, (byte)0)));
     }
 
     @Override

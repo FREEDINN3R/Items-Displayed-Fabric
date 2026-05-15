@@ -1,6 +1,7 @@
 package net.freedinner.items_displayed.entity.custom;
 
 import net.freedinner.items_displayed.item.ModTags;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -138,27 +141,25 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
 
         if (!displayedItem.isEmpty()) {
-            nbt.put(DISPLAYED_ITEM_NBT_KEY, displayedItem.save(this.registryAccess()));
+            valueOutput.store(DISPLAYED_ITEM_NBT_KEY, ItemStack.CODEC, displayedItem);
         }
 
         if (entityRotation != DEFAULT_ENTITY_ROTATION) {
-            nbt.putFloat(ENTITY_ROTATION_NBT_KEY, entityRotation);
+            valueOutput.putFloat(ENTITY_ROTATION_NBT_KEY, entityRotation);
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
+    protected void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
 
-        nbt.getCompound(DISPLAYED_ITEM_NBT_KEY).ifPresent(tag ->
-                displayedItem = ItemStack.parse(this.registryAccess(), tag).orElse(ItemStack.EMPTY)
-        );
+        valueInput.read(DISPLAYED_ITEM_NBT_KEY, ItemStack.CODEC).ifPresent(stack -> displayedItem = stack);
 
-        nbt.getFloat(ENTITY_ROTATION_NBT_KEY).ifPresent(this::setEntityRotation);
+        setEntityRotation(valueInput.getFloatOr(ENTITY_ROTATION_NBT_KEY, DEFAULT_ENTITY_ROTATION));
     }
 
     @Override
