@@ -33,7 +33,7 @@ public class ItemDisplayEntity extends AbstractDisplayEntity {
             return InteractionResult.SUCCESS;
         }
 
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return InteractionResult.CONSUME;
         }
 

@@ -63,7 +63,7 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
         if (itemStack.getItem() instanceof DyeItem dye && this.getColor() != dye.getDyeColor()) {
             this.level().playSound(player, this, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0f, 1.0f);
 
-            if (!this.level().isClientSide) {
+            if (!this.level().isClientSide()) {
                 this.setColor(dye.getDyeColor());
                 itemStack.shrink(1);
             }
@@ -71,7 +71,7 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
             return InteractionResult.SUCCESS;
         }
 
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return InteractionResult.CONSUME;
         }
 

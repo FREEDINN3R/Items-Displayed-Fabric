@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 public class ItemDisplayEntityRenderState extends LivingEntityRenderState {
     public ItemDisplayEntity entity;
     public ItemStack stack=ItemStack.EMPTY;
+    public LivingEntityRenderState entityRenderState;
     public float entityRotation;
     public float hitTicks;
 }

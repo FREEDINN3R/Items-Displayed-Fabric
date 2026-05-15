@@ -9,7 +9,8 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class ItemDisplayEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel {
+public class ItemDisplayEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel<LivingEntityRenderState> {
+
     private final ModelPart root;
 
     public ItemDisplayEntityModel(ModelPart root) {
@@ -34,7 +35,7 @@ public class ItemDisplayEntityModel extends EntityModel<LivingEntityRenderState>
     public void setupAnim(LivingEntityRenderState state) {
     }
 
-	@Override
-	public void translateToHand(HumanoidArm arm, PoseStack matrices) {
-	}
+    @Override
+    public void translateToHand(LivingEntityRenderState entityRenderState, HumanoidArm humanoidArm, PoseStack poseStack) {
+    }
 }

@@ -292,7 +292,7 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     @Override
     public void handleEntityEvent(byte status) {
         if (status == EntityEvent.ARMORSTAND_WOBBLE) {
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 level().playLocalSound(getX(), getY(), getZ(), this.getHitSound(), getSoundSource(), 0.3f, 1.0f, false);
                 lastHitTime = level().getGameTime();
             }
