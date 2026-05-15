@@ -54,7 +54,7 @@ public class ItemDisplayItemRenderer extends RenderLayer<ItemDisplayEntityRender
         Block block=BlockItemMapper.getBlockOrNull(itemStack.getItem(),true);
         ItemStack blockItemStack=new ItemStack(block==null?Blocks.AIR:block.asItem());
 
-        heldItemRenderer.renderItem(entity,blockItemStack,ItemDisplayContext.THIRD_PERSON_RIGHT_HAND,false,matrices,vertexConsumers,light);
+        heldItemRenderer.renderItem(entity, blockItemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, matrices, vertexConsumers, light);
 
         matrices.popPose();
     }
