@@ -10,7 +10,7 @@ import net.freedinner.items_displayed.item.ModItemGroups;
 import net.freedinner.items_displayed.item.ModItems;
 import net.freedinner.items_displayed.item.ModTags;
 import net.freedinner.items_displayed.networking.S2CLoadMapsPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +18,8 @@ public class ItemsDisplayed implements ModInitializer {
 	public static final String MOD_ID = "items_displayed";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	public static Identifier id(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import net.freedinner.items_displayed.ItemsDisplayedClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class ItemDisplayEntityRenderer extends LivingEntityRenderer<ItemDisplayEntity, ItemDisplayEntityRenderState, ItemDisplayEntityModel> {
@@ -32,7 +32,7 @@ public class ItemDisplayEntityRenderer extends LivingEntityRenderer<ItemDisplayE
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ItemDisplayEntityRenderState state) {
+    public Identifier getTextureLocation(ItemDisplayEntityRenderState state) {
         return ItemsDisplayed.id("textures/entity/item_display.png");
     }
 

@@ -11,7 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -51,11 +51,11 @@ public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements Cust
             packet.writeInt(map.size());
 
             map.forEach((key, value) -> {
-                ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(key);
-                packet.writeResourceLocation(blockId);
+                Identifier blockId = BuiltInRegistries.BLOCK.getKey(key);
+                packet.writeIdentifier(blockId);
 
-                ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(value);
-                packet.writeResourceLocation(itemId);
+                Identifier itemId = BuiltInRegistries.ITEM.getKey(value);
+                packet.writeIdentifier(itemId);
             });
         }
 
@@ -64,10 +64,10 @@ public record S2CLoadMapsPacket(BiMap<Block, Item> blockItemMap) implements Cust
             int size = packet.readInt();
 
             for (int i = 0; i < size; i++) {
-                ResourceLocation blockId = packet.readResourceLocation();
+                Identifier blockId = packet.readIdentifier();
                 Block block = BuiltInRegistries.BLOCK.getValue(blockId);
 
-                ResourceLocation itemId = packet.readResourceLocation();
+                Identifier itemId = packet.readIdentifier();
                 Item item = BuiltInRegistries.ITEM.getValue(itemId);
 
                 map.put(block, item);

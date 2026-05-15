@@ -7,7 +7,7 @@ import net.freedinner.items_displayed.item.custom.JewelryPillowItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 
@@ -65,7 +65,7 @@ public class ModItems {
             properties->new JewelryPillowItem(properties,DyeColor.BROWN));
 
     private static Item register(String name, Function<Item.Properties,Item> function){
-        ResourceLocation id=ItemsDisplayed.id(name);
+        Identifier id=ItemsDisplayed.id(name);
         return Registry.register(BuiltInRegistries.ITEM, id, function.apply(new Item.Properties().setId(ResourceKey.create(BuiltInRegistries.ITEM.key(), id))));
     }
 

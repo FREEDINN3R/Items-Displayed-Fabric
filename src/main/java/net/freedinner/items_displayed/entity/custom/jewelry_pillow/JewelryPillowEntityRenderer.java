@@ -6,7 +6,7 @@ import net.freedinner.items_displayed.ItemsDisplayed;
 import net.freedinner.items_displayed.ItemsDisplayedClient;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class JewelryPillowEntityRenderer extends LivingEntityRenderer<JewelryPillowEntity, JewelryPillowEntityRenderState, JewelryPillowEntityModel> {
@@ -32,7 +32,7 @@ public class JewelryPillowEntityRenderer extends LivingEntityRenderer<JewelryPil
     }
 
     @Override
-    public ResourceLocation getTextureLocation(JewelryPillowEntityRenderState state) {
+    public Identifier getTextureLocation(JewelryPillowEntityRenderState state) {
         return ItemsDisplayed.id("textures/entity/jewelry_pillow/"+state.color.getName()+"_jewelry_pillow.png");
     }
 
