@@ -6,18 +6,12 @@
     "/w/"
   ],
   "key": {
-    "*": {
-      "item": "minecraft:gold_nugget"
-    },
-    "/": {
-      "item": "minecraft:stick"
-    },
-    "w": {
-      "item": "minecraft:black_wool"
-    }
+    "*": "minecraft:gold_nugget",
+    "/": "minecraft:stick",
+    "w": "minecraft:black_wool"
   },
   "result": {
-    "count": 1,
-    "id": "items_displayed:black_jewelry_pillow"
+    "id": "items_displayed:black_jewelry_pillow",
+    "count": 1
   }
 }
