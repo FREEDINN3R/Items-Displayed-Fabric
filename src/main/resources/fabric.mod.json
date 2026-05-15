@@ -20,14 +20,17 @@
 		],
 		"client": [
 			"net.freedinner.items_displayed.ItemsDisplayedClient"
-		]
+		],
+      "fabric-datagen": [
+        "net.freedinner.items_displayed.datagen.ItemsDisplayedDataGen"
+      ]
 	},
 	"mixins": [
 		"items_displayed.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
-        "minecraft": ">=1.21.2 <=1.21.3",
+        "minecraft": "~1.21.5",
         "java": ">=21",
 		"fabric-api": "*"
 	},

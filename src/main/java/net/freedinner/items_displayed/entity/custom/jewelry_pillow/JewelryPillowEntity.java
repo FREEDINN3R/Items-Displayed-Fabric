@@ -118,9 +118,9 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
 
-        if (nbt.contains(PILLOW_COLOR_NBT_KEY)) {
-            this.setColor(DyeColor.byId(nbt.getByte(PILLOW_COLOR_NBT_KEY)));
-        }
+        nbt.getByte(PILLOW_COLOR_NBT_KEY).ifPresent(color ->
+                this.setColor(DyeColor.byId(color))
+        );
     }
 
     @Override

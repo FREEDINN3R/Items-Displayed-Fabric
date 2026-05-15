@@ -19,13 +19,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class ItemDisplayItem extends Item {
@@ -34,21 +34,19 @@ public class ItemDisplayItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag type) {
-        super.appendHoverText(stack, context, tooltip, type);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, tooltip, flag);
 
-        if (!ModConfigs.APPEND_EXTRA_TOOLTIPS) {
-            return;
-        }
+        if (!ModConfigs.APPEND_EXTRA_TOOLTIPS) return;
 
         if (Screen.hasShiftDown()) {
-            tooltip.add(Component.translatable("item.items_displayed.tooltip.can_be_used_to").withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("item.items_displayed.tooltip.item_display_0").withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("item.items_displayed.tooltip.item_display_1").withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("item.items_displayed.tooltip.item_display_2").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("item.items_displayed.tooltip.can_be_used_to").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("item.items_displayed.tooltip.item_display_0").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("item.items_displayed.tooltip.item_display_1").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("item.items_displayed.tooltip.item_display_2").withStyle(ChatFormatting.GRAY));
         }
         else {
-            tooltip.add(Component.translatable("item.items_displayed.tooltip.shift_more_info").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("item.items_displayed.tooltip.shift_more_info").withStyle(ChatFormatting.GRAY));
         }
     }
 

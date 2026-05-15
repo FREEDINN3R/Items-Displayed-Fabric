@@ -45,7 +45,7 @@ public class JewelryPillowItemRenderer extends RenderLayer<JewelryPillowEntityRe
 
         Block block = BlockItemMapper.getBlockOrNull(itemStack.getItem(), true);
         ItemStack blockItemStack = new ItemStack(block == null ? Blocks.AIR : block.asItem());
-        this.heldItemRenderer.renderItem(entity, blockItemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, matrices, vertexConsumers, light);
+        this.heldItemRenderer.renderItem(entity, blockItemStack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, matrices, vertexConsumers, light);
 
         matrices.popPose();
     }

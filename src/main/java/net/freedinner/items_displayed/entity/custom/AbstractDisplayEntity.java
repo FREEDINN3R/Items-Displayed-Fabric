@@ -1,7 +1,6 @@
 package net.freedinner.items_displayed.entity.custom;
 
 import net.freedinner.items_displayed.item.ModTags;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -133,18 +132,17 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     }
 
     @Override
-    protected float tickHeadTurn(float bodyRotation, float headRotation) {
+    protected void tickHeadTurn(float f) {
         yBodyRotO = yRotO;
         yBodyRot = getYRot();
-        return 0.0f;
     }
-    
+
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
 
         if (!displayedItem.isEmpty()) {
-            nbt.put(DISPLAYED_ITEM_NBT_KEY, displayedItem.saveOptional(this.registryAccess()));
+            nbt.put(DISPLAYED_ITEM_NBT_KEY, displayedItem.save(this.registryAccess()));
         }
 
         if (entityRotation != DEFAULT_ENTITY_ROTATION) {
@@ -156,35 +154,20 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
 
-        if (nbt.contains(DISPLAYED_ITEM_NBT_KEY)) {
-            CompoundTag heldItemNbt = nbt.getCompound(DISPLAYED_ITEM_NBT_KEY);
-            displayedItem = ItemStack.parseOptional(this.registryAccess(), heldItemNbt);
-        }
+        nbt.getCompound(DISPLAYED_ITEM_NBT_KEY).ifPresent(tag ->
+                displayedItem = ItemStack.parse(this.registryAccess(), tag).orElse(ItemStack.EMPTY)
+        );
 
-        if (nbt.contains(ENTITY_ROTATION_NBT_KEY)) {
-            setEntityRotation(nbt.getFloat(ENTITY_ROTATION_NBT_KEY));
-        }
-    }
-
-    @Override
-    public Iterable<ItemStack> getHandSlots() {
-        return NonNullList.withSize(1, displayedItem);
-    }
-
-    @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return NonNullList.create();
+        nbt.getFloat(ENTITY_ROTATION_NBT_KEY).ifPresent(this::setEntityRotation);
     }
 
     @Override
     public ItemStack getItemBySlot(EquipmentSlot slot) {
-        return (slot == EquipmentSlot.MAINHAND) ? displayedItem : ItemStack.EMPTY;
+        return slot == EquipmentSlot.MAINHAND ? displayedItem : ItemStack.EMPTY;
     }
 
     @Override
     public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
-        verifyEquippedItem(stack);
-
         if (slot == EquipmentSlot.MAINHAND) {
             ItemStack oldStack = displayedItem;
             displayedItem = stack;
