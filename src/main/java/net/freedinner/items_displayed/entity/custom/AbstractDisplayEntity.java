@@ -1,8 +1,6 @@
 package net.freedinner.items_displayed.entity.custom;
 
 import net.freedinner.items_displayed.item.ModTags;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -292,7 +290,7 @@ public abstract class AbstractDisplayEntity extends LivingEntity {
     @Override
     public void handleEntityEvent(byte status) {
         if (status == EntityEvent.ARMORSTAND_WOBBLE) {
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 level().playLocalSound(getX(), getY(), getZ(), this.getHitSound(), getSoundSource(), 0.3f, 1.0f, false);
                 lastHitTime = level().getGameTime();
             }

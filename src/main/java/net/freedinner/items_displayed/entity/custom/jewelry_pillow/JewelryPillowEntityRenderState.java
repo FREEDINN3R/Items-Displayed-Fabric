@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 public class JewelryPillowEntityRenderState extends LivingEntityRenderState {
     public JewelryPillowEntity entity;
     public ItemStack stack=ItemStack.EMPTY;
+    public LivingEntityRenderState entityRenderState;
     public float entityRotation;
     public float hitTicks;
     public DyeColor color=DyeColor.WHITE;

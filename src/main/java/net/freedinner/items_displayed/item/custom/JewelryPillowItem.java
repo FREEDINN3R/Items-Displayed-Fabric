@@ -4,7 +4,7 @@ import net.freedinner.items_displayed.config.ModConfigs;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.entity.custom.jewelry_pillow.JewelryPillowEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -45,7 +45,7 @@ public class JewelryPillowItem extends Item {
             return;
         }
 
-        if (Screen.hasShiftDown()) {
+        if (Minecraft.getInstance().hasShiftDown()) {
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.can_be_used_to").withStyle(ChatFormatting.GRAY));
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.jewelry_pillow_0").withStyle(ChatFormatting.GRAY));
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.jewelry_pillow_1").withStyle(ChatFormatting.GRAY));

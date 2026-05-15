@@ -4,7 +4,7 @@ import net.freedinner.items_displayed.config.ModConfigs;
 import net.freedinner.items_displayed.entity.ModEntities;
 import net.freedinner.items_displayed.entity.custom.item_display.ItemDisplayEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -39,7 +39,7 @@ public class ItemDisplayItem extends Item {
 
         if (!ModConfigs.APPEND_EXTRA_TOOLTIPS) return;
 
-        if (Screen.hasShiftDown()) {
+        if (Minecraft.getInstance().hasShiftDown()) {
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.can_be_used_to").withStyle(ChatFormatting.GRAY));
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.item_display_0").withStyle(ChatFormatting.GRAY));
             tooltip.accept(Component.translatable("item.items_displayed.tooltip.item_display_1").withStyle(ChatFormatting.GRAY));

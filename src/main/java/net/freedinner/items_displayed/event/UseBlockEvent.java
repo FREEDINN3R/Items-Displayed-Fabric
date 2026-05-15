@@ -14,7 +14,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class UseBlockEvent implements UseBlockCallback {
     @Override
     public InteractionResult interact(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
-        if (world.isClientSide || !player.isShiftKeyDown()) {
+        if (world.isClientSide() || !player.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }
 

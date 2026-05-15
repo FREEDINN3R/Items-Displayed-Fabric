@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class JewelryPillowEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel {
+public class JewelryPillowEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel<LivingEntityRenderState> {
     private final ModelPart root;
 
     public JewelryPillowEntityModel(ModelPart root) {
@@ -36,6 +36,6 @@ public class JewelryPillowEntityModel extends EntityModel<LivingEntityRenderStat
     }
 
     @Override
-    public void translateToHand(HumanoidArm arm, PoseStack matrices) {
+    public void translateToHand(LivingEntityRenderState entityRenderState, HumanoidArm humanoidArm, PoseStack poseStack) {
     }
 }
