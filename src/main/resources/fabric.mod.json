@@ -5,7 +5,7 @@
 	"name": "Items Displayed",
 	"description": "A mod for builders and adventurers who would like to have their items placed in the world, not lying around in chests!",
 	"authors": [
-		"FREEDINNER"
+		"FREEDINNER" , "JaaiDead"
 	],
 	"contact": {
 		"homepage": "https://www.curseforge.com/minecraft/mc-mods/items-displayed",
@@ -27,8 +27,8 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21.1",
-		"java": ">=21",
+        "minecraft": ">=1.21.2 <=1.21.3",
+        "java": ">=21",
 		"fabric-api": "*"
 	},
 	"suggests": {

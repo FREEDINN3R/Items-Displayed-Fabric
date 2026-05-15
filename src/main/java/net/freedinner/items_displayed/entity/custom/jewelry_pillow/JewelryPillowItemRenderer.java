@@ -15,23 +15,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class JewelryPillowItemRenderer extends RenderLayer<JewelryPillowEntity, JewelryPillowEntityModel> {
+public class JewelryPillowItemRenderer extends RenderLayer<JewelryPillowEntityRenderState, JewelryPillowEntityModel> {
     private final ItemInHandRenderer heldItemRenderer;
 
-    public JewelryPillowItemRenderer(RenderLayerParent<JewelryPillowEntity, JewelryPillowEntityModel> context, ItemInHandRenderer heldItemRenderer) {
+    public JewelryPillowItemRenderer(RenderLayerParent<JewelryPillowEntityRenderState, JewelryPillowEntityModel> context, ItemInHandRenderer heldItemRenderer) {
         super(context);
         this.heldItemRenderer = heldItemRenderer;
     }
 
     @Override
-    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, int light, JewelryPillowEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        ItemStack itemStack = entity.getMainHandItem();
+    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, int light, JewelryPillowEntityRenderState state, float yRot, float xRot) {
+        ItemStack itemStack=state.stack;
 
         if (itemStack.isEmpty()) {
             return;
         }
 
-        renderItem(entity, itemStack, matrices, vertexConsumers, light);
+        renderItem(state.entity,itemStack,matrices,vertexConsumers,light);
     }
 
     protected void renderItem(LivingEntity entity, ItemStack itemStack, PoseStack matrices, MultiBufferSource vertexConsumers, int light) {

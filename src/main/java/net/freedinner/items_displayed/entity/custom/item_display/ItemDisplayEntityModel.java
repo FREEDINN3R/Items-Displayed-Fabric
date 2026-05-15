@@ -2,22 +2,24 @@ package net.freedinner.items_displayed.entity.custom.item_display;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class ItemDisplayEntityModel extends HierarchicalModel<ItemDisplayEntity> implements ArmedModel {
-	private final ModelPart root;
+public class ItemDisplayEntityModel extends EntityModel<LivingEntityRenderState> implements ArmedModel {
+    private final ModelPart root;
 
-	public ItemDisplayEntityModel(ModelPart root) {
-		this.root = root;
-	}
+    public ItemDisplayEntityModel(ModelPart root) {
+        super(root);
+        this.root = root;
+    }
 
-	public static LayerDefinition getTexturedModelData() {
-		MeshDefinition modelData = new MeshDefinition();
-		PartDefinition modelPartData = modelData.getRoot();
+    public static LayerDefinition getTexturedModelData() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
 
 		PartDefinition main = modelPartData.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 		main.addOrReplaceChild("stick1", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -0.5F, -6.0F, 1.0F, 1.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.3285F, -5.1408F, 0.9266F, -0.3491F, -1.0472F, 1.5708F));
@@ -28,14 +30,9 @@ public class ItemDisplayEntityModel extends HierarchicalModel<ItemDisplayEntity>
 		return LayerDefinition.create(modelData, 32, 32);
 	}
 
-	@Override
-	public ModelPart root() {
-		return root;
-	}
-
-	@Override
-	public void setupAnim(ItemDisplayEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-	}
+    @Override
+    public void setupAnim(LivingEntityRenderState state) {
+    }
 
 	@Override
 	public void translateToHand(HumanoidArm arm, PoseStack matrices) {

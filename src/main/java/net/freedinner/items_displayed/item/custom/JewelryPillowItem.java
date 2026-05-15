@@ -13,8 +13,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -81,7 +81,7 @@ public class JewelryPillowItem extends Item {
         }
 
         context.getItemInHand().shrink(1);
-        return InteractionResult.sidedSuccess(world.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     private boolean enoughSpaceAt(BlockPos blockPos, Level world) {
@@ -93,7 +93,7 @@ public class JewelryPillowItem extends Item {
 
     private JewelryPillowEntity createJewelryPillow(ServerLevel serverWorld, UseOnContext context, BlockPos blockPos) {
         Consumer<JewelryPillowEntity> consumer = EntityType.createDefaultStackConfig(serverWorld, context.getItemInHand(), context.getPlayer());
-        return ModEntities.JEWELRY_PILLOW.create(serverWorld, consumer, blockPos, MobSpawnType.SPAWN_EGG, true, false);
+        return ModEntities.JEWELRY_PILLOW.create(serverWorld, consumer, blockPos, EntitySpawnReason.SPAWN_ITEM_USE, true, false);
     }
 
     private void setJewelryPillowRotation(JewelryPillowEntity entity, UseOnContext context) {

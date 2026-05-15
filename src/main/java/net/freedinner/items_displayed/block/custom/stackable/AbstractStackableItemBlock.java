@@ -6,7 +6,6 @@ import net.freedinner.items_displayed.util.BlockPlacer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,7 +22,7 @@ public abstract class AbstractStackableItemBlock extends AbstractItemBlock {
         registerDefaultState(defaultBlockState()
                 .setValue(getItemProperty(), 1));
     }
-    
+
     protected abstract IntegerProperty getItemProperty();
 
     private int getMaxItemCount() {
@@ -31,19 +30,18 @@ public abstract class AbstractStackableItemBlock extends AbstractItemBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!player.isSecondaryUseActive() && shouldAddItem(player.getItemInHand(hand), state)) {
             InteractionResult result = BlockPlacer.place(state.getBlock(), player, hand, hit);
 
-            if (result.consumesAction()) {
-                return ItemInteractionResult.CONSUME;
-            }
-            else {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if(result.consumesAction()){
+                return InteractionResult.SUCCESS;
+            }else{
+                return InteractionResult.PASS;
             }
         }
 
-        return super.useItemOn(stack, state, world, pos, player, hand, hit);
+        return super.useItemOn(stack,state,world,pos,player,hand,hit);
     }
 
     @Override
