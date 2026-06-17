@@ -3,9 +3,9 @@ package net.freedinner.items_displayed.entity.custom.jewelry_pillow;
 import net.freedinner.items_displayed.entity.custom.AbstractDisplayEntity;
 import net.freedinner.items_displayed.item.ModItems;
 import net.freedinner.items_displayed.item.ModTags;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,11 +20,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class JewelryPillowEntity extends AbstractDisplayEntity {
@@ -51,25 +53,27 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (player.isSpectator()) {
             return InteractionResult.SUCCESS;
         }
 
-        if (itemStack.getItem() instanceof DyeItem dye && this.getColor() != dye.getDyeColor()) {
-            this.level().playSound(player, this, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0f, 1.0f);
+        DyeColor dyeColor= itemStack.get(DataComponents.DYE);
 
-            if (!this.level().isClientSide) {
-                this.setColor(dye.getDyeColor());
+        if(dyeColor!=null&&this.getColor()!=dyeColor){
+            this.level().playSound(player,this,SoundEvents.DYE_USE,SoundSource.PLAYERS,1.0F,1.0F);
+
+            if(!this.level().isClientSide()){
+                this.setColor(dyeColor);
                 itemStack.shrink(1);
             }
 
             return InteractionResult.SUCCESS;
         }
 
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return InteractionResult.CONSUME;
         }
 
@@ -108,19 +112,16 @@ public class JewelryPillowEntity extends AbstractDisplayEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
+    public void addAdditionalSaveData(ValueOutput nbt) {
         super.addAdditionalSaveData(nbt);
-
-        nbt.putByte(PILLOW_COLOR_NBT_KEY, (byte) this.getColor().getId());
+        nbt.putByte(PILLOW_COLOR_NBT_KEY, (byte)this.getColor().getId());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
+    public void readAdditionalSaveData(ValueInput nbt) {
         super.readAdditionalSaveData(nbt);
 
-        if (nbt.contains(PILLOW_COLOR_NBT_KEY)) {
-            this.setColor(DyeColor.byId(nbt.getByte(PILLOW_COLOR_NBT_KEY)));
-        }
+        this.setColor(DyeColor.byId(nbt.getByteOr(PILLOW_COLOR_NBT_KEY, (byte)0)));
     }
 
     @Override

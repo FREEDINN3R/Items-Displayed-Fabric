@@ -1,7 +1,7 @@
 package net.freedinner.items_displayed.event;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.freedinner.items_displayed.ItemsDisplayed;
@@ -11,7 +11,7 @@ public class ModEventHandlers {
         ItemsDisplayed.LOGGER.info("Registering server event handlers");
 
         UseBlockCallback.EVENT.register(new UseBlockEvent());
-        ServerWorldEvents.LOAD.register(new LoadServerWorldEvent());
+        ServerLevelEvents.LOAD.register(new LoadServerWorldEvent());
         ServerPlayConnectionEvents.JOIN.register(new ClientJoinServerEvent());
     }
 

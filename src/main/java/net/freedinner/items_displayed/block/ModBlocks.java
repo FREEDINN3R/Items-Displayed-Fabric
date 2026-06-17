@@ -9,180 +9,188 @@ import net.freedinner.items_displayed.item.custom.DebugBlockItem;
 import net.freedinner.items_displayed.util.ModTemplates;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
+import java.util.function.Function;
+
 public class ModBlocks {
     public static final Block ANGLER_POTTERY_SHERD = registerBlock("angler_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block ARCHER_POTTERY_SHERD = registerBlock("archer_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block ARMS_UP_POTTERY_SHERD = registerBlock("arms_up_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block BLADE_POTTERY_SHERD = registerBlock("blade_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block BREWER_POTTERY_SHERD = registerBlock("brewer_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block BURN_POTTERY_SHERD = registerBlock("burn_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block DANGER_POTTERY_SHERD = registerBlock("danger_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block EXPLORER_POTTERY_SHERD = registerBlock("explorer_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block FLOW_POTTERY_SHERD = registerBlock("flow_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block FRIEND_POTTERY_SHERD = registerBlock("friend_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block GUSTER_POTTERY_SHERD = registerBlock("guster_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block HEART_POTTERY_SHERD = registerBlock("heart_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block HEARTBREAK_POTTERY_SHERD = registerBlock("heartbreak_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block HOWL_POTTERY_SHERD = registerBlock("howl_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block MINER_POTTERY_SHERD = registerBlock("miner_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block MOURNER_POTTERY_SHERD = registerBlock("mourner_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block PLENTY_POTTERY_SHERD = registerBlock("plenty_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block PRIZE_POTTERY_SHERD = registerBlock("prize_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block SCRAPE_POTTERY_SHERD = registerBlock("scrape_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block SHEAF_POTTERY_SHERD = registerBlock("sheaf_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block SHELTER_POTTERY_SHERD = registerBlock("shelter_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block SKULL_POTTERY_SHERD = registerBlock("skull_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
     public static final Block SNORT_POTTERY_SHERD = registerBlock("snort_pottery_sherd",
-            ModTemplates.defaultSherdBlock());
+            ModTemplates::defaultSherdBlock);
 
     public static final Block NETHERITE_UPGRADE = registerBlock("netherite_upgrade",
-            ModTemplates.defaultUpgradeBlock());
+            ModTemplates::defaultUpgradeBlock);
     public static final Block BOLT_ARMOR_TRIM = registerBlock("bolt_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.COPPER));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.COPPER));
     public static final Block COAST_ARMOR_TRIM = registerBlock("coast_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.STONE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.STONE));
     public static final Block DUNE_ARMOR_TRIM = registerBlock("dune_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DRIPSTONE_BLOCK));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DRIPSTONE_BLOCK));
     public static final Block EYE_ARMOR_TRIM = registerBlock("eye_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.CALCITE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.CALCITE));
     public static final Block FLOW_ARMOR_TRIM = registerBlock("flow_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DEEPSLATE_TILES));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DEEPSLATE_TILES));
     public static final Block HOST_ARMOR_TRIM = registerBlock("host_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.GRAVEL));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.GRAVEL));
     public static final Block RAISER_ARMOR_TRIM = registerBlock("raiser_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.GRAVEL));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.GRAVEL));
     public static final Block RIB_ARMOR_TRIM = registerBlock("rib_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.NETHER_BRICKS));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.NETHER_BRICKS));
     public static final Block SENTRY_ARMOR_TRIM = registerBlock("sentry_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.STONE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.STONE));
     public static final Block SHAPER_ARMOR_TRIM = registerBlock("shaper_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.GRAVEL));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.GRAVEL));
     public static final Block SILENCE_ARMOR_TRIM = registerBlock("silence_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DEEPSLATE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DEEPSLATE));
     public static final Block SNOUT_ARMOR_TRIM = registerBlock("snout_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.POLISHED_DEEPSLATE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.POLISHED_DEEPSLATE));
     public static final Block SPIRE_ARMOR_TRIM = registerBlock("spire_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DEEPSLATE_BRICKS));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DEEPSLATE_BRICKS));
     public static final Block TIDE_ARMOR_TRIM = registerBlock("tide_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DEEPSLATE_BRICKS));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DEEPSLATE_BRICKS));
     public static final Block VEX_ARMOR_TRIM = registerBlock("vex_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.STONE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.STONE));
     public static final Block WARD_ARMOR_TRIM = registerBlock("ward_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.DEEPSLATE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.DEEPSLATE));
     public static final Block WAYFINDER_ARMOR_TRIM = registerBlock("wayfinder_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.GRAVEL));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.GRAVEL));
     public static final Block WILD_ARMOR_TRIM = registerBlock("wild_armor_trim",
-            ModTemplates.defaultArmorTrimBlock(SoundType.STONE));
+            key -> ModTemplates.defaultArmorTrimBlock(key, SoundType.STONE));
 
     public static final Block BRICK = registerBlock("brick",
-            ModTemplates.defaultIngotBlock(MapColor.COLOR_RED, false));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.COLOR_RED, false));
     public static final Block NETHER_BRICK = registerBlock("nether_brick",
-            ModTemplates.defaultIngotBlock(MapColor.NETHER, false));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.NETHER, false));
     public static final Block IRON_INGOT = registerBlock("iron_ingot",
-            ModTemplates.defaultIngotBlock(MapColor.METAL, true));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.METAL, true));
     public static final Block COPPER_INGOT = registerBlock("copper_ingot",
-            ModTemplates.defaultIngotBlock(MapColor.COLOR_ORANGE, true));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.COLOR_ORANGE, true));
     public static final Block GOLD_INGOT = registerBlock("gold_ingot",
-            ModTemplates.defaultIngotBlock(MapColor.GOLD, true));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.GOLD, true));
     public static final Block NETHERITE_INGOT = registerBlock("netherite_ingot",
-            ModTemplates.defaultIngotBlock(MapColor.COLOR_BLACK, true));
+            key -> ModTemplates.defaultIngotBlock(key, MapColor.COLOR_BLACK, true));
 
     public static final Block COAL = registerBlock("coal",
-            new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.COLOR_BLACK)));
+            key -> new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.COLOR_BLACK)));
     public static final Block CHARCOAL = registerBlock("charcoal",
-            new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.COLOR_BLACK)));
+            key -> new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.COLOR_BLACK)));
     public static final Block LAPIS_LAZULI = registerBlock("lapis_lazuli",
-            new LapisLazuliItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.LAPIS)));
+            key -> new LapisLazuliItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.LAPIS)));
     public static final Block AMETHYST_SHARD = registerBlock("amethyst_shard",
-            new CrystalItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.COLOR_PURPLE)));
+            key -> new CrystalItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.COLOR_PURPLE)));
     public static final Block DIAMOND = registerBlock("diamond",
-            new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.DIAMOND)));
+            key -> new DiamondItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.DIAMOND)));
     public static final Block EMERALD = registerBlock("emerald",
-            new EmeraldItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.EMERALD)));
+            key -> new EmeraldItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.EMERALD)));
     public static final Block ECHO_SHARD = registerBlock("echo_shard",
-            new CrystalItemBlock(ModTemplates.defaultGemstoneSettings(MapColor.COLOR_BLACK).sound(SoundType.SCULK_SHRIEKER)));
+            key -> new CrystalItemBlock(ModTemplates.defaultGemstoneSettings(key, MapColor.COLOR_BLACK).sound(SoundType.SCULK_SHRIEKER)));
 
     public static final Block MUSIC_DISC_13 = registerBlock("music_disc_13",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_CAT = registerBlock("music_disc_cat",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_BLOCKS = registerBlock("music_disc_blocks",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_CHIRP = registerBlock("music_disc_chirp",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_FAR = registerBlock("music_disc_far",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_MALL = registerBlock("music_disc_mall",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_MELLOHI = registerBlock("music_disc_mellohi",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_STAL = registerBlock("music_disc_stal",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_STRAD = registerBlock("music_disc_strad",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_WARD = registerBlock("music_disc_ward",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_11 = registerBlock("music_disc_11",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_WAIT = registerBlock("music_disc_wait",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_PIGSTEP = registerBlock("music_disc_pigstep",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_OTHERSIDE = registerBlock("music_disc_otherside",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_5 = registerBlock("music_disc_5",
-            ModTemplates.defaultDiscBlock(SoundType.BAMBOO_WOOD));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.BAMBOO_WOOD));
     public static final Block MUSIC_DISC_RELIC = registerBlock("music_disc_relic",
-            ModTemplates.defaultDiscBlock(SoundType.DECORATED_POT));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.DECORATED_POT));
     public static final Block MUSIC_DISC_CREATOR = registerBlock("music_disc_creator",
-            ModTemplates.defaultDiscBlock(SoundType.COPPER));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.COPPER));
     public static final Block MUSIC_DISC_CREATOR_MUSIC_BOX = registerBlock("music_disc_creator_music_box",
-            ModTemplates.defaultDiscBlock(SoundType.COPPER));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.COPPER));
     public static final Block MUSIC_DISC_PRECIPICE = registerBlock("music_disc_precipice",
-            ModTemplates.defaultDiscBlock(SoundType.STONE));
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.STONE));
     public static final Block DISC_FRAGMENT_5 = registerBlock("disc_fragment_5",
-            ModTemplates.defaultDiscFragmentBlock());
+            ModTemplates::defaultDiscFragmentBlock);
 
-    private static Block registerBlock(String name, Block block) {
-        Block registeredBlock = Registry.register(BuiltInRegistries.BLOCK, ItemsDisplayed.id(name), block);
-        registerDebugItem(name, registeredBlock);
+    private static Block registerBlock(String name, Function<ResourceKey<Block>,Block> function){
+        ResourceKey<Block> key=ResourceKey.create(BuiltInRegistries.BLOCK.key(),ItemsDisplayed.id(name));
+        Block block=function.apply(key);
+        Block registeredBlock=Registry.register(BuiltInRegistries.BLOCK, ItemsDisplayed.id(name), block);
+        registerDebugItem(name,registeredBlock);
 
         return registeredBlock;
     }
 
-    private static void registerDebugItem(String name, Block block) {
-        DebugBlockItem debugBlockItem = new DebugBlockItem(block, new Item.Properties());
+    private static void registerDebugItem(String name,Block block){
+        DebugBlockItem debugBlockItem=new DebugBlockItem(
+                block, new Item.Properties().setId(ResourceKey.create(BuiltInRegistries.ITEM.key(), ItemsDisplayed.id(name)))
+        );
+
         Registry.register(BuiltInRegistries.ITEM, ItemsDisplayed.id(name), debugBlockItem);
     }
 
-    public static void registerBlocks() {
+    public static void registerBlocks(){
         ItemsDisplayed.LOGGER.info("Registering blocks");
     }
 }
