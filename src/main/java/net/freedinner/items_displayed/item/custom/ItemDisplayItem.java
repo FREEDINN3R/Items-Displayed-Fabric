@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PostSpawnProcessor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -86,7 +87,7 @@ public class ItemDisplayItem extends Item {
     }
 
     private ItemDisplayEntity createItemDisplay(ServerLevel serverWorld, UseOnContext context, BlockPos blockPos) {
-        Consumer<ItemDisplayEntity> consumer = EntityType.createDefaultStackConfig(serverWorld, context.getItemInHand(), context.getPlayer());
+        PostSpawnProcessor<ItemDisplayEntity> consumer = EntityType.createDefaultStackConfig(serverWorld, context.getItemInHand(), context.getPlayer());
         return ModEntities.ITEM_DISPLAY.create(serverWorld, consumer, blockPos, EntitySpawnReason.SPAWN_ITEM_USE, true, false);
     }
 

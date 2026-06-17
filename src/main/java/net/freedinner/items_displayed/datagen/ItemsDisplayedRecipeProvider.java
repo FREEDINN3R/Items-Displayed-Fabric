@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -33,22 +34,14 @@ public class ItemsDisplayedRecipeProvider extends FabricRecipeProvider {
 
                 offerItemDisplayRecipe(recipeOutput, items);
 
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.BLACK_JEWELRY_PILLOW,Items.BLACK_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.BLUE_JEWELRY_PILLOW,Items.BLUE_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.BROWN_JEWELRY_PILLOW,Items.BROWN_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.CYAN_JEWELRY_PILLOW,Items.CYAN_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.GRAY_JEWELRY_PILLOW,Items.GRAY_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.GREEN_JEWELRY_PILLOW,Items.GREEN_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.LIGHT_BLUE_JEWELRY_PILLOW,Items.LIGHT_BLUE_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.LIGHT_GRAY_JEWELRY_PILLOW,Items.LIGHT_GRAY_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.LIME_JEWELRY_PILLOW,Items.LIME_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.MAGENTA_JEWELRY_PILLOW,Items.MAGENTA_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.ORANGE_JEWELRY_PILLOW,Items.ORANGE_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.PINK_JEWELRY_PILLOW,Items.PINK_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.PURPLE_JEWELRY_PILLOW,Items.PURPLE_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.RED_JEWELRY_PILLOW,Items.RED_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.WHITE_JEWELRY_PILLOW,Items.WHITE_WOOL);
-                offerJewelryPillowRecipe(recipeOutput,items,ModItems.YELLOW_JEWELRY_PILLOW,Items.YELLOW_WOOL);
+                for (DyeColor color : DyeColor.values()) {
+                    offerJewelryPillowRecipe(
+                            recipeOutput,
+                            items,
+                            ModItems.JEWELRY_PILLOWS.pick(color),
+                            Items.WOOL.pick(color)
+                    );
+                }
             }
 
             private void offerJewelryPillowRecipe(RecipeOutput output, HolderGetter<Item> items, ItemLike result, ItemLike wool) {

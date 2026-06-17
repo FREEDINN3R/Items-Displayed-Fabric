@@ -10,6 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.ColorCollection;
 
 import java.util.function.Function;
 
@@ -63,6 +64,26 @@ public class ModItems {
 
     public static final Item BROWN_JEWELRY_PILLOW=register("brown_jewelry_pillow",
             properties->new JewelryPillowItem(properties,DyeColor.BROWN));
+
+    public static final ColorCollection<Item> JEWELRY_PILLOWS =
+            new ColorCollection<>(
+                    WHITE_JEWELRY_PILLOW,
+                    ORANGE_JEWELRY_PILLOW,
+                    MAGENTA_JEWELRY_PILLOW,
+                    LIGHT_BLUE_JEWELRY_PILLOW,
+                    YELLOW_JEWELRY_PILLOW,
+                    LIME_JEWELRY_PILLOW,
+                    PINK_JEWELRY_PILLOW,
+                    GRAY_JEWELRY_PILLOW,
+                    LIGHT_GRAY_JEWELRY_PILLOW,
+                    CYAN_JEWELRY_PILLOW,
+                    PURPLE_JEWELRY_PILLOW,
+                    BLUE_JEWELRY_PILLOW,
+                    BROWN_JEWELRY_PILLOW,
+                    GREEN_JEWELRY_PILLOW,
+                    RED_JEWELRY_PILLOW,
+                    BLACK_JEWELRY_PILLOW
+            );
 
     private static Item register(String name, Function<Item.Properties,Item> function){
         Identifier id=ItemsDisplayed.id(name);
