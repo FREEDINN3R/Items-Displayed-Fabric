@@ -123,6 +123,9 @@ public class ModItemGroups {
                 entries.accept(Items.MUSIC_DISC_5);
                 entries.accept(Items.MUSIC_DISC_PIGSTEP);
                 entries.accept(Items.DISC_FRAGMENT_5);
+                entries.accept(Items.MUSIC_DISC_TEARS);
+                entries.accept(Items.MUSIC_DISC_LAVA_CHICKEN);
+                entries.accept(Items.MUSIC_DISC_BOUNCE);
             })
             .build();
 
