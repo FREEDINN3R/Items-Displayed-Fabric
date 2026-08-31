@@ -174,6 +174,8 @@ public class ModBlocks {
             key -> ModTemplates.defaultDiscBlock(key, SoundType.GLASS));
     public static final Block MUSIC_DISC_LAVA_CHICKEN = registerBlock("music_disc_lava_chicken",
             key -> ModTemplates.defaultDiscBlock(key, SoundType.GRASS));
+    public static final Block MUSIC_DISC_BOUNCE = registerBlock("music_disc_bounce",
+            key -> ModTemplates.defaultDiscBlock(key, SoundType.SLIME_BLOCK));
     public static final Block DISC_FRAGMENT_5 = registerBlock("disc_fragment_5",
             ModTemplates::defaultDiscFragmentBlock);
 
