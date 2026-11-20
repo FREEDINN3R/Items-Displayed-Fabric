@@ -1,0 +1,38 @@
+{
+  "items_displayed.credit": "Перекладено Matthew3955",
+
+  "item.items_displayed.item_group_name": "Items Displayed",
+  "item.items_displayed.item_display": "Підставка для предметів",
+  "item.items_displayed.white_jewelry_pillow": "Біла подушка для прикрас",
+  "item.items_displayed.light_gray_jewelry_pillow": "Світло-сіра подушка для прикрас",
+  "item.items_displayed.gray_jewelry_pillow": "Сіра подушка для прикрас",
+  "item.items_displayed.black_jewelry_pillow": "Чорна подушка для прикрас",
+  "item.items_displayed.red_jewelry_pillow": "Червона подушка для прикрас",
+  "item.items_displayed.orange_jewelry_pillow": "Помаранчева подушка для прикрас",
+  "item.items_displayed.yellow_jewelry_pillow": "Жовта подушка для прикрас",
+  "item.items_displayed.lime_jewelry_pillow": "Лаймова подушка для прикрас",
+  "item.items_displayed.green_jewelry_pillow": "Зелена подушка для прикрас",
+  "item.items_displayed.light_blue_jewelry_pillow": "Світло-синя подушка для прикрас",
+  "item.items_displayed.cyan_jewelry_pillow": "Блакитна подушка для прикрас",
+  "item.items_displayed.blue_jewelry_pillow": "Синя подушка для прикрас",
+  "item.items_displayed.purple_jewelry_pillow": "Фіолетова подушка для прикрас",
+  "item.items_displayed.magenta_jewelry_pillow": "Пурпурова подушка для прикрас",
+  "item.items_displayed.pink_jewelry_pillow": "Рожева подушка для прикрас",
+  "item.items_displayed.brown_jewelry_pillow": "Коричнева подушка для прикрас",
+
+  "item.items_displayed.tooltip.shift_place": "МОжна розміститисидячи",
+  "item.items_displayed.tooltip.shift_more_info": "Нативність Shift для інформації ",
+  "item.items_displayed.tooltip.can_be_used_to": "Можна використати, щоб поставити:",
+  "item.items_displayed.tooltip.item_display_0": " - Гончарні черепки",
+  "item.items_displayed.tooltip.item_display_1": " - Ковальські шаблони",
+  "item.items_displayed.tooltip.item_display_2": " - Музичні диски",
+  "item.items_displayed.tooltip.jewelry_pillow_0": " - Дорогоцінне каміння",
+  "item.items_displayed.tooltip.jewelry_pillow_1": " - Кристали",
+  "item.items_displayed.tooltip.debug": "Ти не повинен мати цей предмет...",
+
+  "tag.item.items_displayed.sherds" : "Гончарні черепки",
+  "tag.item.items_displayed.smithing_templates" : "Ковальські шаблони",
+
+  "entity.items_displayed.item_display": "Підставка для предметів",
+  "entity.items_displayed.jewelry_pillow": "Подушка для прикрас"
+}
